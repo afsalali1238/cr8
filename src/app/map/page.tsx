@@ -1,5 +1,5 @@
 import { createServerClient } from '@/lib/supabase/server'
-import MapViewClient from '@/components/MapViewClient'
+import MapWrapper from '@/components/MapWrapper'
 
 export const revalidate = 60
 
@@ -35,7 +35,7 @@ export default async function MapPage() {
         </div>
       </div>
       <div style={{ height: 'calc(100vh - 160px)' }}>
-        <MapViewClient artists={mapArtists} />
+        <MapWrapper artists={mapArtists} />
       </div>
     </main>
   )
