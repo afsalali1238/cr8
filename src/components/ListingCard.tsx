@@ -1,0 +1,47 @@
+// src/components/ListingCard.tsx
+'use client'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import type { Listing } from '@/types'
+
+export default function ListingCard({ listing }: { listing: Listing }) {
+  return (
+    <motion.div
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Link
+        href={`/listings/${listing.id}`}
+        className="block group bg-cream rounded-2xl overflow-hidden border border-sand-dark
+                   hover:border-clay hover:shadow-xl hover:shadow-clay/10 transition-all duration-300 h-full"
+      >
+        <div className="relative h-60 bg-sand-dark overflow-hidden">
+          {listing.image_url ? (
+            <img
+              src={listing.image_url}
+              alt={listing.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-5xl">🎁</div>
+          )}
+          {listing.price && (
+            <span className="absolute bottom-3 right-3 px-3 py-1 rounded-lg bg-ink/80 backdrop-blur-md
+                             text-sm font-semibold text-white">
+              ₹{listing.price}
+            </span>
+          )}
+        </div>
+        <div className="p-4">
+          <h3 className="font-semibold text-ink text-base line-clamp-1">{listing.title}</h3>
+          <p className="text-xs text-muted mt-1 line-clamp-2 leading-relaxed">
+            {listing.description}
+          </p>
+          <p className="text-xs text-clay font-medium mt-3 group-hover:underline">
+            Details →
+          </p>
+        </div>
+      </Link>
+    </motion.div>
+  )
+}
