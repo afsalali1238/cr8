@@ -1,142 +1,93 @@
-// src/app/listings/[id]/page.tsx
 import { createServerClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
-import type { Metadata } from 'next'
-import ListingCard from '@/components/ListingCard'
-import type { ListingWithArtist } from '@/types'
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export default async function ListingPage({ params }: { params: { id: string } }) {
   const supabase = createServerClient()
   const { data: listing } = await supabase
     .from('listings')
-    .select('title, description, image_url, artist:artists(name)')
+    .select('*, artist:artists!inner(*)')
     .eq('id', params.id)
-    .single() as { data: any }
-
-  if (!listing) return { title: 'Listing Not Found' }
-
-  const artistName = listing.artist?.name || 'Artist'
-  return {
-    title: `${listing.title} by ${artistName} | CraftersUnited`,
-    description: listing.description || `Check out this handmade item on CraftersUnited.`,
-    openGraph: {
-      title: `${listing.title} by ${artistName}`,
-      description: listing.description || `Check out this handmade item on CraftersUnited.`,
-      images: listing.image_url ? [{ url: listing.image_url }] : [],
-    },
-  }
-}
-
-export default async function ListingDetailPage({ params }: { params: { id: string } }) {
-  const supabase = createServerClient()
-
-  // Fetch listing with artist details
-  const { data: listing } = await supabase
-    .from('listings')
-    .select('*, artist:artists(*)')
-    .eq('id', params.id)
-    .single() as { data: ListingWithArtist | null }
+    .eq('is_available', true)
+    .single()
 
   if (!listing) notFound()
 
-  // Fetch other items from the same artist
-  const { data: moreFromArtist } = await supabase
-    .from('listings')
-    .select('*')
-    .eq('artist_id', listing.artist_id)
-    .neq('id', listing.id)
-    .limit(4)
-
-  const whatsappUrl = `https://wa.me/${listing.artist.whatsapp}?text=${encodeURIComponent(
-    `Hi ${listing.artist.name}, I found your item "${listing.title}" on CraftersUnited and I'm interested!`
-  )}`
+  const artist = listing.artist
+  const whatsappMsg = encodeURIComponent(
+    `Hi ${artist.name}, I found your listing "${listing.title}" on CraftersUnited! I'm interested.`
+  )
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
-        {/* Image Section */}
-        <div className="bg-sand rounded-3xl overflow-hidden border border-sand-dark aspect-square relative">
+    <main className="max-w-5xl mx-auto px-4 py-10">
+      <Link href="/listings" className="text-sm text-clay hover:underline mb-6 inline-block">← Back to Shop</Link>
+
+      <div className="grid md:grid-cols-2 gap-10">
+        {/* Image */}
+        <div className="rounded-2xl overflow-hidden bg-sand aspect-square">
           {listing.image_url ? (
-            <Image
-              src={listing.image_url}
-              alt={listing.title}
-              fill
-              className="object-cover hover:scale-105 transition-transform duration-700"
-            />
+            <img src={listing.image_url} alt={listing.title} className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-8xl">🎁</div>
+            <div className="w-full h-full flex items-center justify-center text-8xl">🎨</div>
           )}
         </div>
 
-        {/* Info Section */}
-        <div className="flex flex-col justify-center">
-          <Link 
-            href={`/listings?category=${listing.category}`}
-            className="text-clay font-semibold text-sm uppercase tracking-widest mb-2 hover:underline"
-          >
-            {listing.category}
-          </Link>
-          <h1 className="font-display text-5xl text-ink mb-6">{listing.title}</h1>
-          
-          <div className="flex items-center gap-4 mb-8">
-            <span className="text-3xl font-bold text-ink">₹{listing.price}</span>
-            <span className="px-3 py-1 rounded-full bg-clay-pale text-clay text-xs font-bold uppercase tracking-wider">
-              Handmade
+        {/* Details */}
+        <div>
+          {listing.category && (
+            <span className="px-3 py-1 rounded-full bg-clay-pale text-xs font-medium text-clay border border-clay/20">
+              {listing.category}
             </span>
+          )}
+          <h1 className="font-display text-4xl text-ink mt-3 mb-2">{listing.title}</h1>
+          {listing.price && (
+            <p className="text-3xl font-bold text-clay mb-4">₹{listing.price.toLocaleString('en-IN')}</p>
+          )}
+          {listing.description && (
+            <p className="text-charcoal leading-relaxed mb-6">{listing.description}</p>
+          )}
+
+          {/* Seller info */}
+          <div className="p-4 bg-sand rounded-xl border border-sand-dark mb-6">
+            <p className="text-xs text-muted uppercase tracking-wider mb-2">Sold by</p>
+            <div className="flex items-center gap-3">
+              {artist.photo_url ? (
+                <img src={artist.photo_url} alt={artist.name} className="w-10 h-10 rounded-full object-cover" />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-sand-dark flex items-center justify-center">🎨</div>
+              )}
+              <div>
+                <p className="font-semibold text-ink text-sm">{artist.name}</p>
+                <p className="text-xs text-muted">{artist.city}, {artist.state}</p>
+              </div>
+              <Link href={`/artists/${artist.id}`}
+                className="ml-auto text-xs text-clay font-medium hover:underline">
+                View profile →
+              </Link>
+            </div>
           </div>
 
-          <p className="text-charcoal text-lg leading-relaxed mb-10 border-l-4 border-sand-dark pl-6">
-            {listing.description}
-          </p>
-
-          <div className="space-y-4">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full py-4 rounded-full bg-clay text-white text-center font-semibold text-lg
-                         hover:bg-clay-light transition-all shadow-xl shadow-clay/30"
-            >
-              Contact Seller on WhatsApp
-            </a>
-            
-            <div className="flex items-center gap-4 p-4 rounded-2xl bg-sand border border-sand-dark">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-sand-dark relative">
-                {listing.artist.photo_url ? (
-                  <Image src={listing.artist.photo_url} alt={listing.artist.name} fill className="object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-xl">🎨</div>
-                )}
-              </div>
-              <div>
-                <p className="text-xs text-muted uppercase tracking-widest font-semibold">Artist</p>
-                <Link href={`/artists/${listing.artist.id}`} className="font-display text-xl text-ink hover:text-clay">
-                  {listing.artist.name}
-                </Link>
-              </div>
+          {/* Contact */}
+          <div className="space-y-3">
+            <p className="text-sm font-medium text-charcoal">Contact the seller directly:</p>
+            <div className="flex flex-wrap gap-3">
+              {artist.whatsapp && (
+                <a href={`https://wa.me/${artist.whatsapp}?text=${whatsappMsg}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="flex-1 py-3 rounded-full bg-green-600 text-white text-sm font-semibold text-center hover:bg-green-700 transition-colors">
+                  💬 WhatsApp Seller
+                </a>
+              )}
+              {artist.email && (
+                <a href={`mailto:${artist.email}?subject=Inquiry: ${listing.title}`}
+                  className="flex-1 py-3 rounded-full border-2 border-clay text-clay text-sm font-semibold text-center hover:bg-clay hover:text-white transition-colors">
+                  ✉️ Email Seller
+                </a>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* More from Artist */}
-      {moreFromArtist && moreFromArtist.length > 0 && (
-        <section>
-          <div className="flex items-baseline justify-between mb-8">
-            <h2 className="font-display text-4xl text-ink">More from {listing.artist.name}</h2>
-            <Link href={`/artists/${listing.artist.id}`} className="text-sm text-clay font-medium hover:underline">
-              View artist profile →
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {moreFromArtist.map((item) => (
-              <ListingCard key={item.id} listing={item} />
-            ))}
-          </div>
-        </section>
-      )}
     </main>
   )
 }
