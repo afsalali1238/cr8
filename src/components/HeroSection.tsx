@@ -102,18 +102,34 @@ export default function HeroSection() {
         >
           <div className="col-span-1 flex flex-col gap-3">
             <div className="rounded-2xl bg-sand-dark flex-1 overflow-hidden">
-              <img src="/hero-1.png" alt="Handmade craft" className="w-full h-full object-cover opacity-90" />
+              <img 
+                src="https://images.unsplash.com/photo-1565193298357-3f360742cc4e?auto=format&fit=crop&q=80&w=800" 
+                alt="Handmade pottery" 
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
+              />
             </div>
             <div className="rounded-2xl bg-sand h-36 overflow-hidden">
-              <img src="/hero-2.png" alt="Artist at work" className="w-full h-full object-cover opacity-90" />
+              <img 
+                src="https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?auto=format&fit=crop&q=80&w=800" 
+                alt="Artist painting" 
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
+              />
             </div>
           </div>
           <div className="col-span-1 flex flex-col gap-3">
             <div className="rounded-2xl bg-sand h-36 overflow-hidden">
-              <img src="/hero-3.png" alt="Ceramic work" className="w-full h-full object-cover opacity-90" />
+              <img 
+                src="https://images.unsplash.com/photo-1611085583191-a3b1a6a939db?auto=format&fit=crop&q=80&w=800" 
+                alt="Handmade jewellery" 
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
+              />
             </div>
             <div className="rounded-2xl bg-sand-dark flex-1 overflow-hidden">
-              <img src="/hero-4.png" alt="Handmade jewellery" className="w-full h-full object-cover opacity-90" />
+              <img 
+                src="https://images.unsplash.com/photo-1536176561669-612921102426?auto=format&fit=crop&q=80&w=800" 
+                alt="Macrame and textile craft" 
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
+              />
             </div>
           </div>
           
