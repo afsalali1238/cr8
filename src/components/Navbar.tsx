@@ -1,12 +1,15 @@
+// src/components/Navbar.tsx
+// UPDATED: Added Community link
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 const links = [
-  { href: '/artists', label: 'Artists' },
-  { href: '/listings', label: 'Shop' },
-  { href: '/map', label: 'Map' },
+  { href: '/artists',   label: 'Artists'   },
+  { href: '/listings',  label: 'Shop'      },
+  { href: '/map',       label: 'Map'       },
+  { href: '/community', label: 'Community' },
 ]
 
 export default function Navbar() {
@@ -16,6 +19,7 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-cream border-b border-sand-dark">
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+
         <Link href="/" className="flex items-center gap-2">
           <span className="font-display text-3xl text-clay leading-none">cr8un8</span>
           <span className="hidden sm:block text-xs text-muted font-medium tracking-widest uppercase mt-1">
@@ -23,13 +27,13 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-5">
           {links.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
               className={`text-sm font-medium transition-colors hover:text-clay ${
-                pathname === href ? 'text-clay' : 'text-charcoal'
+                pathname.startsWith(href) ? 'text-clay' : 'text-charcoal'
               }`}
             >
               {label}
@@ -37,12 +41,14 @@ export default function Navbar() {
           ))}
           <Link
             href="/join"
-            className="ml-2 px-4 py-2 rounded-full bg-clay text-white text-sm font-medium hover:bg-clay-light transition-colors"
+            className="ml-1 px-4 py-2 rounded-full bg-clay text-white text-sm font-medium
+                       hover:bg-clay-light transition-colors"
           >
             Join as Artist
           </Link>
         </nav>
 
+        {/* Mobile hamburger */}
         <button
           className="md:hidden p-2"
           onClick={() => setOpen(!open)}
@@ -56,16 +62,26 @@ export default function Navbar() {
         </button>
       </div>
 
+      {/* Mobile menu */}
       {open && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-cream border-b border-sand-dark px-4 py-4 flex flex-col gap-4">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-cream border-b border-sand-dark px-4 py-4 flex flex-col gap-3">
           {links.map(({ href, label }) => (
-            <Link key={href} href={href} onClick={() => setOpen(false)}
-              className="text-base font-medium text-charcoal hover:text-clay">
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setOpen(false)}
+              className={`text-base font-medium transition-colors hover:text-clay ${
+                pathname.startsWith(href) ? 'text-clay' : 'text-charcoal'
+              }`}
+            >
               {label}
             </Link>
           ))}
-          <Link href="/join" onClick={() => setOpen(false)}
-            className="px-4 py-2.5 rounded-full bg-clay text-white text-sm font-medium text-center">
+          <Link
+            href="/join"
+            onClick={() => setOpen(false)}
+            className="px-4 py-2.5 rounded-full bg-clay text-white text-sm font-medium text-center mt-1"
+          >
             Join as Artist
           </Link>
         </div>
