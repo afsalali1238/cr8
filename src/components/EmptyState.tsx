@@ -1,8 +1,6 @@
 // src/components/EmptyState.tsx
 'use client'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-
 export default function EmptyState({ 
   message = "No results found for your selection.",
   resetUrl = "/artists"
@@ -11,11 +9,7 @@ export default function EmptyState({
   resetUrl?: string
 }) {
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-20 px-4 text-center"
-    >
+    <div className="flex flex-col items-center justify-center py-20 px-4 text-center animate-fade-up opacity-0">
       <div className="w-24 h-24 bg-sand rounded-full flex items-center justify-center text-5xl mb-6 border border-sand-dark">
         🔍
       </div>
@@ -37,6 +31,6 @@ export default function EmptyState({
         <div className="w-2 h-2 rounded-full bg-clay/40" />
         <div className="w-2 h-2 rounded-full bg-clay/20" />
       </div>
-    </motion.div>
+    </div>
   )
 }

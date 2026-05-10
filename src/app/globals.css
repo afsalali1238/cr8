@@ -14,3 +14,20 @@ body { -webkit-font-smoothing: antialiased; }
 
 .leaflet-pane { z-index: 1 !important; }
 .leaflet-top, .leaflet-bottom { z-index: 2 !important; }
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fade-up 0.5s ease-out forwards;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
