@@ -28,6 +28,7 @@ export default function ArtistMapFull({ artists, activeId, onPinClick }: Props) 
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<Record<string, any>>({})
+  const leafletRef = useRef<any>(null)
 
   useEffect(() => {
     // Dynamically import leaflet only client-side
@@ -37,6 +38,7 @@ export default function ArtistMapFull({ artists, activeId, onPinClick }: Props) 
     async function initMap() {
       // @ts-ignore
       L = (await import('leaflet')).default
+      leafletRef.current = L
       // @ts-ignore
       await import('leaflet/dist/leaflet.css')
       // @ts-ignore
@@ -182,25 +184,25 @@ export default function ArtistMapFull({ artists, activeId, onPinClick }: Props) 
 
   // When activeId changes, update pin color and open popup
   useEffect(() => {
-    if (!mapInstanceRef.current) return
+    const L = leafletRef.current
+    if (!mapInstanceRef.current || !L) return
     Object.entries(markersRef.current).forEach(([id, marker]) => {
       const isActive = id === activeId
-      marker.setIcon({
+      marker.setIcon(L.divIcon({
         className: '',
         html: `<div style="
           width: 32px; height: 32px;
           background: ${isActive ? '#e8601e' : '#c2440f'};
           border: 3px solid white;
           border-radius: 50% 50% 50% 0;
-          transform: rotate(-45deg);
           box-shadow: 0 2px 8px rgba(194,68,15,${isActive ? '0.6' : '0.4'});
           transform: rotate(-45deg) scale(${isActive ? '1.3' : '1'});
           transition: all 0.2s;
         "></div>`,
-        iconSize: [32, 32] as [number, number],
-        iconAnchor: [16, 32] as [number, number],
-        popupAnchor: [0, -36] as [number, number],
-      })
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -36],
+      }))
       if (isActive) {
         marker.openPopup()
         mapInstanceRef.current?.panTo(marker.getLatLng(), { animate: true })
