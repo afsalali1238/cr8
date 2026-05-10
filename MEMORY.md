@@ -117,8 +117,16 @@
 
 ### Session 3 — Final Wiring & Tailwind Fixes (2026-05-09)
 - **Wiring & Fixes**: Fixed Tailwind CSS missing config (`postcss.config.js`), fixed CSS variables/globals layout, fully resolved prerendering errors.
-- **Completion**: Manually verified all 8 routes (`/`, `/artists`, `/artists/[id]`, `/listings`, `/listings/[id]`, `/join`, `/map`, `/admin`) render correctly with zero errors.
-- **Status**: Phase 1 pages are COMPLETE.
+- **Completion**: Manually verified all 8 routes render correctly with zero errors.
+
+### Session 4 — Realism, Documentation & Performance (2026-05-10)
+- **Realism Overhaul**: Replaced fake artist seeds with realistic Indian artisan profiles (Anita Nair, Vikram Sethi, Sanya Kapoor) featuring professional bios and Unsplash photography.
+- **Product Polish**: Updated hero image collage with real photos. Improved listing descriptions and images for a premium marketplace feel.
+- **Robustness**: Fixed critical "Glitch" where detail pages would crash on data mismatches. Hardened artist and listing detail views.
+- **Documentation**: Added a comprehensive `README.md` for project clarity.
+- **Performance & Housekeeping**: Moved `dotenv` to `devDependencies`. Replaced `framer-motion` with CSS transitions in several components to reduce bundle weight.
+- **Git History**: Transitioned from bulk-dumping to logical, individual commits.
+- **Blocker**: Identified missing `communities` table in database; shared SQL fix for manual execution in Supabase.
 
 ---
 
@@ -127,3 +135,4 @@
 - [ ] Phase 2: User Authentication for Buyers (Favorites/Saves)
 - [ ] Phase 2: In-app Messaging for inquiry tracking
 - [ ] Phase 2: Artist Dashboard (Self-service listing management)
+- [ ] Phase 2: Community Feature Activation (pending SQL table creation)
