@@ -66,13 +66,13 @@ export default async function ArtistPage({ params }: { params: { id: string } })
         <h2 className="font-display text-3xl text-ink mb-4">
           Listings ({artist.listings?.length || 0})
         </h2>
-        {(!artist.listings || artist.listings.length === 0) ? (
+        {(!artist.listings || (Array.isArray(artist.listings) && artist.listings.length === 0)) ? (
           <div className="text-center py-12 bg-sand rounded-2xl text-muted">
             No listings yet. Check back soon!
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {artist.listings.map((listing: any) => (
+            {(Array.isArray(artist.listings) ? artist.listings : [artist.listings]).map((listing: any) => (
               <Link key={listing.id} href={`/listings/${listing.id}`}
                 className="group block rounded-xl overflow-hidden border border-sand-dark bg-cream hover:border-clay hover:shadow-md transition-all duration-200">
                 <div className="h-40 bg-sand overflow-hidden">

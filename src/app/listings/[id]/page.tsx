@@ -13,7 +13,9 @@ export default async function ListingPage({ params }: { params: { id: string } }
 
   if (!listing) notFound()
 
-  const artist = listing.artist
+  const rawArtist = (listing as any).artist
+  const artist = Array.isArray(rawArtist) ? rawArtist[0] : rawArtist
+  if (!artist) notFound()
   const whatsappMsg = encodeURIComponent(
     `Hi ${artist.name}, I found your listing "${listing.title}" on CraftersUnited! I'm interested.`
   )
