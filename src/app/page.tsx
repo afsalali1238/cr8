@@ -63,12 +63,20 @@ export default async function HomePage() {
           </div>
           <div className="hidden md:grid grid-cols-2 gap-3 h-[480px]">
             <div className="flex flex-col gap-3">
-              <div className="rounded-2xl bg-sand-dark flex-1 flex items-center justify-center text-6xl">🎨</div>
-              <div className="rounded-2xl bg-sand h-36 flex items-center justify-center text-5xl">🏺</div>
+              <div className="rounded-2xl bg-sand-dark flex-1 flex items-center justify-center overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400" alt="Painting" className="w-full h-full object-cover" />
+              </div>
+              <div className="rounded-2xl bg-sand h-36 flex items-center justify-center overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400" alt="Pottery" className="w-full h-full object-cover" />
+              </div>
             </div>
             <div className="flex flex-col gap-3">
-              <div className="rounded-2xl bg-sand h-36 flex items-center justify-center text-5xl">💍</div>
-              <div className="rounded-2xl bg-sand-dark flex-1 flex items-center justify-center text-6xl">✨</div>
+              <div className="rounded-2xl bg-sand h-36 flex items-center justify-center overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400" alt="Jewelry" className="w-full h-full object-cover" />
+              </div>
+              <div className="rounded-2xl bg-sand-dark flex-1 flex items-center justify-center overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=400" alt="Handmade crafts" className="w-full h-full object-cover" />
+              </div>
             </div>
           </div>
         </div>
