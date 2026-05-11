@@ -1,6 +1,7 @@
 // src/app/admin/page.tsx
 'use client'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { approveArtist, toggleArtistActive } from './actions'
 import type { Artist } from '@/types'
@@ -12,6 +13,7 @@ export default function AdminDashboard() {
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved'>('pending')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const supabase = createClient()
+  const router = useRouter()
 
   async function fetchArtists() {
     setLoading(true)
@@ -39,6 +41,12 @@ export default function AdminDashboard() {
     }
   }
 
+  async function handleSignOut() {
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
+
   return (
     <main className="max-w-6xl mx-auto px-4 py-12">
       <header className="flex flex-col md:flex-row justify-between items-baseline mb-12 gap-6">
@@ -47,17 +55,25 @@ export default function AdminDashboard() {
           <p className="text-muted italic">Vetting the human touch in every creation</p>
         </div>
         
-        <div className="flex bg-sand rounded-full p-1 border border-sand-dark shadow-inner">
-          {(['pending', 'approved', 'all'] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-8 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all
-                ${filter === f ? 'bg-clay text-white shadow-lg' : 'text-charcoal hover:bg-sand-dark'}`}
-            >
-              {f}
-            </button>
-          ))}
+        <div className="flex items-center gap-3">
+          <div className="flex bg-sand rounded-full p-1 border border-sand-dark shadow-inner">
+            {(['pending', 'approved', 'all'] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-8 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all
+                  ${filter === f ? 'bg-clay text-white shadow-lg' : 'text-charcoal hover:bg-sand-dark'}`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={handleSignOut}
+            className="px-4 py-2.5 rounded-full border border-sand-dark text-xs font-bold uppercase tracking-widest text-muted hover:text-red-600 hover:border-red-200 transition-colors"
+          >
+            Sign Out
+          </button>
         </div>
       </header>
 
