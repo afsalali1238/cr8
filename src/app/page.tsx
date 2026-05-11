@@ -48,7 +48,7 @@ export default async function HomePage() {
             </div>
             <div className="flex gap-8 mt-10">
               <div>
-                <p className="font-display text-3xl text-clay">10+</p>
+                <p className="font-display text-3xl text-clay">{(artists || []).length}+</p>
                 <p className="text-xs text-muted uppercase tracking-wide">Artists</p>
               </div>
               <div>

@@ -2,12 +2,14 @@
 'use server'
 import { createServerClient } from '@/lib/supabase/server'
 
+const ADMIN_EMAIL = 'afsalali8321@gmail.com'
+
 export async function approveArtist(id: string) {
   const supabase = createServerClient()
 
-  // Verify the caller is authenticated
+  // Verify the caller is the site owner
   const { data: { session } } = await supabase.auth.getSession()
-  if (!session) throw new Error('Unauthorized')
+  if (!session || session.user.email !== ADMIN_EMAIL) throw new Error('Unauthorized')
 
   const { error } = await supabase
     .from('artists')
@@ -22,13 +24,6 @@ export async function toggleArtistActive(id: string, isActive: boolean) {
   const supabase = createServerClient()
 
   const { data: { session } } = await supabase.auth.getSession()
-  if (!session) throw new Error('Unauthorized')
+  if (!session || session.user.email !== ADMIN_EMAIL) throw new Error('Unauthorized')
 
-  const { error } = await supabase
-    .from('artists')
-    .update({ is_active: isActive })
-    .eq('id', id)
-
-  if (error) throw error
-  return true
-}
+  const { error } = await supa

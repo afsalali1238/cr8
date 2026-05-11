@@ -41,6 +41,16 @@ export default function AdminDashboard() {
     }
   }
 
+  async function handleDeactivate(id: string) {
+    if (!confirm('Deactivate this artist? They will no longer appear publicly.')) return
+    try {
+      await toggleArtistActive(id, false)
+      fetchArtists()
+    } catch (err) {
+      alert('Error deactivating artist')
+    }
+  }
+
   async function handleSignOut() {
     await supabase.auth.signOut()
     router.push('/login')
@@ -199,29 +209,13 @@ export default function AdminDashboard() {
                                         >
                                           View Public Profile
                                         </a>
-                                        <button className="w-full py-3 border-2 border-clay/20 text-clay text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-clay-pale transition-all">
+                                        <button
+                                          onClick={(e) => { e.stopPropagation(); handleDeactivate(artist.id) }}
+                                          className="w-full py-3 border-2 border-clay/20 text-clay text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-clay-pale transition-all">
                                           Deactivate Artist
                                         </button>
                                       </div>
                                     )}
                                   </div>
                                   <div className="text-[10px] text-muted leading-relaxed">
-                                    Application submitted on {new Date(artist.created_at || '').toLocaleDateString()}
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          </td>
-                        </tr>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </main>
-  )
-}
+                                    Application submitted on {new Date(artist.created_at || '').toLocaleDateString
