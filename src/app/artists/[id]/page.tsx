@@ -67,8 +67,17 @@ export default async function ArtistPage({ params }: { params: { id: string } })
           Listings ({artist.listings?.length || 0})
         </h2>
         {(!artist.listings || (Array.isArray(artist.listings) && artist.listings.length === 0)) ? (
-          <div className="text-center py-12 bg-sand rounded-2xl text-muted">
-            No listings yet. Check back soon!
+          <div className="text-center py-12 bg-sand rounded-2xl border border-sand-dark">
+            <div className="text-4xl mb-3">🛍️</div>
+            <p className="text-charcoal font-medium mb-1">No listings yet</p>
+            <p className="text-muted text-sm mb-4">This artist hasn't added any items — reach out directly to enquire.</p>
+            {artist.whatsapp && (
+              <a href={`https://wa.me/${artist.whatsapp}?text=${whatsappMsg}`}
+                target="_blank" rel="noopener noreferrer"
+                className="inline-block px-6 py-2.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors">
+                💬 Enquire on WhatsApp
+              </a>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">

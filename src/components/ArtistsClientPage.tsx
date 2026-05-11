@@ -166,14 +166,32 @@ export default function ArtistsClientPage({ artists, categories, states }: Props
           <div className="flex-1 p-4 lg:p-6">
             {filtered.length === 0 ? (
               <div className="text-center py-20">
-                <div className="text-4xl mb-3">🎨</div>
-                <p className="text-charcoal font-medium">No artists match this filter</p>
-                <button
-                  onClick={() => { setActiveCategory(null); setActiveState(null) }}
-                  className="mt-4 text-clay text-sm underline"
-                >
-                  Clear filters
-                </button>
+                {artists.length === 0 ? (
+                  <>
+                    <div className="text-5xl mb-4">🎨</div>
+                    <h3 className="font-display text-2xl text-ink mb-2">No artists yet</h3>
+                    <p className="text-muted mb-6 max-w-sm mx-auto">
+                      Be the first to showcase your craft on CraftersUnited — it takes 2 minutes to apply.
+                    </p>
+                    <a
+                      href="/join"
+                      className="inline-block px-8 py-3 rounded-full bg-clay text-white font-medium hover:bg-clay-light transition-colors shadow-lg shadow-clay/20"
+                    >
+                      Join as Artist →
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-4xl mb-3">🔍</div>
+                    <p className="text-charcoal font-medium">No artists match this filter</p>
+                    <button
+                      onClick={() => { setActiveCategory(null); setActiveState(null) }}
+                      className="mt-4 text-clay text-sm underline"
+                    >
+                      Clear filters
+                    </button>
+                  </>
+                )}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
