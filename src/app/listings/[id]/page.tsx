@@ -71,7 +71,12 @@ export default async function ListingPage({ params }: { params: { id: string } }
 
           {/* Contact */}
           <div className="space-y-3">
-            <p className="text-sm font-medium text-charcoal">Contact the seller directly:</p>
+            <div className="p-3 bg-clay-pale/50 rounded-xl border border-clay/10">
+              <p className="text-xs text-charcoal text-center">
+                💡 Prices shown for reference — contact the artist directly to order, negotiate, or request custom work.
+              </p>
+            </div>
+            <p className="text-sm font-medium text-charcoal">Interested? Reach out directly:</p>
             <div className="flex flex-wrap gap-3">
               {artist.whatsapp && (
                 <a href={`https://wa.me/${artist.whatsapp}?text=${whatsappMsg}`}
