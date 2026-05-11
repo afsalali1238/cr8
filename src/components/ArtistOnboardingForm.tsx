@@ -1,7 +1,12 @@
 // src/components/ArtistOnboardingForm.tsx
 'use client'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+
+// Strip HTML tags to prevent XSS in text fields
+function stripHtml(str: string): string {
+  return str.replace(/<[^>]*>/g, '').trim()
+}
 
 const CATEGORIES = [
   'Art & Crafts', 'Home Décor', 'Collectibles & Antiques',
@@ -21,6 +26,7 @@ export default function ArtistOnboardingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const mountTime = useRef(Date.now())
   const supabase = createClient()
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -31,6 +37,46 @@ export default function ArtistOnboardingForm() {
     const form = e.currentTarget
     const data = new FormData(form)
     const photoFile = data.get('photo') as File
+
+    // Honeypot — bots fill hidden fields, humans don't
+    if (data.get('website_url')) {
+      setIsSuccess(true) // silently pretend success
+      return
+    }
+
+    // Time-based check — reject submissions < 3 seconds after page load
+    if (Date.now() - mountTime.current < 3000) {
+      setError('Please take a moment to fill out the form completely.')
+      setIsSubmitting(false)
+      return
+    }
+
+    // Validate fields
+    const name = stripHtml(data.get('name') as string || '')
+    const bio = stripHtml(data.get('bio') as string || '')
+    const city = stripHtml(data.get('city') as string || '')
+    const state = data.get('state') as string
+    const category = data.get('category') as string
+    const rawWhatsapp = (data.get('whatsapp') as string || '').replace(/\D/g, '')
+
+    if (name.length < 2 || name.length > 80) {
+      setError('Name must be 2–80 characters.'); setIsSubmitting(false); return
+    }
+    if (bio.length < 50 || bio.length > 300) {
+      setError('Bio must be 50–300 characters.'); setIsSubmitting(false); return
+    }
+    if (city.length < 2) {
+      setError('Please enter a valid city.'); setIsSubmitting(false); return
+    }
+    if (!INDIAN_STATES.includes(state)) {
+      setError('Please select a valid state.'); setIsSubmitting(false); return
+    }
+    if (!CATEGORIES.includes(category)) {
+      setError('Please select a valid category.'); setIsSubmitting(false); return
+    }
+    if (rawWhatsapp.length < 10 || rawWhatsapp.length > 12) {
+      setError('WhatsApp number must be 10 digits.'); setIsSubmitting(false); return
+    }
 
     try {
       // 1. Upload photo to Supabase Storage
@@ -48,20 +94,20 @@ export default function ArtistOnboardingForm() {
 
       // 2. Clean data
       const instagram = (data.get('instagram') as string)?.replace('@', '') || null
-      let whatsapp = (data.get('whatsapp') as string)?.replace(/\D/g, '')
+      let whatsapp = rawWhatsapp
       if (whatsapp && !whatsapp.startsWith('91')) whatsapp = `91${whatsapp}`
 
-      // 3. Insert artist row
+      // 3. Insert artist row (using sanitized values)
       const { error: insertError } = await supabase.from('artists').insert({
-        name: data.get('name') as string,
-        bio: data.get('bio') as string,
-        city: data.get('city') as string,
-        state: data.get('state') as string,
-        location_name: `${data.get('city')}, ${data.get('state')}`,
+        name,
+        bio,
+        city,
+        state,
+        location_name: `${city}, ${state}`,
         whatsapp,
         instagram,
         email: data.get('email') as string || null,
-        category: data.get('category') as string,
+        category,
         photo_url,
         is_approved: false,
       })
@@ -100,6 +146,9 @@ export default function ArtistOnboardingForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Honeypot — hidden from humans, bots auto-fill it */}
+      <input type="text" name="website_url" tabIndex={-1} autoComplete="off"
+        style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0 }} />
       <div className="space-y-6">
         <div>
           <label htmlFor="name" className={labelClasses}>Full Name *</label>
