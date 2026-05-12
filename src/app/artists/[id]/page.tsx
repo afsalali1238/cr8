@@ -52,6 +52,13 @@ export default async function ArtistPage({ params }: { params: { id: string } })
                 💬 WhatsApp
               </a>
             )}
+            {artist.instagram && (
+              <a href={`https://instagram.com/${artist.instagram}`}
+                target="_blank" rel="noopener noreferrer"
+                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium hover:opacity-90 transition-opacity">
+                📸 Instagram
+              </a>
+            )}
             {artist.email && (
               <a href={`mailto:${artist.email}`}
                 className="px-5 py-2.5 rounded-full border-2 border-clay text-clay text-sm font-medium hover:bg-clay hover:text-white transition-colors">
@@ -93,17 +100,4 @@ export default async function ArtistPage({ params }: { params: { id: string } })
                     fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
                   />
                 </div>
-                <div className="p-3">
-                  <p className="font-semibold text-ink text-sm line-clamp-1">{listing.title}</p>
-                  {listing.price && (
-                    <p className="text-clay font-bold text-sm mt-0.5">₹{listing.price.toLocaleString('en-IN')}</p>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-    </main>
-  )
-}
+   

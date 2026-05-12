@@ -1,6 +1,7 @@
 import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import SafeImage from '@/components/SafeImage'
+import CategoryIcon from '@/components/CategoryIcon'
 
 export const revalidate = 60
 
@@ -89,11 +90,13 @@ export default async function HomePage() {
           <h2 className="font-display text-4xl text-ink">Shop by Category</h2>
           <Link href="/listings" className="text-sm text-clay font-medium hover:underline">All listings →</Link>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {(categories || []).map((cat: any) => (
             <Link key={cat.slug} href={`/listings?category=${cat.slug}`}
-              className="group flex flex-col items-center gap-2 p-4 rounded-2xl bg-sand border border-sand-dark hover:border-clay hover:bg-clay-pale transition-all duration-200">
-              <span className="text-3xl group-hover:scale-110 transition-transform duration-200">{cat.icon}</span>
+              className="group flex flex-col items-center gap-3 p-5 rounded-2xl bg-sand border border-sand-dark hover:border-clay hover:bg-clay-pale transition-all duration-200">
+              <span className="group-hover:scale-110 transition-transform duration-200">
+                <CategoryIcon slug={cat.slug} size={44} />
+              </span>
               <span className="text-xs font-medium text-charcoal text-center leading-tight">{cat.name}</span>
             </Link>
           ))}
@@ -171,11 +174,4 @@ export default async function HomePage() {
             List your work for free. Connect directly with buyers. No commission. No algorithms working against you.
           </p>
           <Link href="/join"
-            className="inline-block px-8 py-4 rounded-full bg-clay text-white font-medium text-lg hover:bg-clay-light transition-colors">
-            Join CraftersUnited — Free
-          </Link>
-        </div>
-      </section>
-    </main>
-  )
-}
+            className="inline-block px-8 py-4 rounded-full bg-clay text-white font-me
