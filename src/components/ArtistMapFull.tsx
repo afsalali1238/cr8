@@ -227,7 +227,7 @@ export default function ArtistMapFull({ artists, activeId, onPinClick }: Props) 
           display: none;
         }
       `}</style>
-      <div ref={mapRef} style={{ height: '100%', width: '100%' }} />
+      <div ref={mapRef} className="w-full h-full" />
     </>
   )
 }

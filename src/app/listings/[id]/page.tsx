@@ -18,6 +18,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
   const rawArtist = (listing as any).artist
   const artist = Array.isArray(rawArtist) ? rawArtist[0] : rawArtist
   if (!artist) notFound()
+
   const whatsappMsg = encodeURIComponent(
     `Hi ${artist.name}, I found your listing "${listing.title}" on CraftersUnited! I'm interested.`
   )
@@ -29,10 +30,10 @@ export default async function ListingPage({ params }: { params: { id: string } }
       <div className="grid md:grid-cols-2 gap-10">
         {/* Image */}
         <div className="rounded-2xl overflow-hidden bg-sand aspect-square">
-          <SafeImage 
-            src={listing.image_url || ''} 
-            alt={listing.title} 
-            className="w-full h-full object-cover" 
+          <SafeImage
+            src={listing.image_url || ''}
+            alt={listing.title}
+            className="w-full h-full object-cover"
             fallback={<ImageFallback className="w-full h-full" variant="listing" />}
           />
         </div>
@@ -56,10 +57,10 @@ export default async function ListingPage({ params }: { params: { id: string } }
           <div className="p-4 bg-sand rounded-xl border border-sand-dark mb-6">
             <p className="text-xs text-muted uppercase tracking-wider mb-2">Sold by</p>
             <div className="flex items-center gap-3">
-              <SafeImage 
-                src={artist.photo_url || ''} 
-                alt={artist.name} 
-                className="w-10 h-10 rounded-full object-cover" 
+              <SafeImage
+                src={artist.photo_url || ''}
+                alt={artist.name}
+                className="w-10 h-10 rounded-full object-cover"
                 fallback={<ImageFallback className="w-10 h-10 rounded-full" variant="artist" />}
               />
               <div>
@@ -77,7 +78,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
           <div className="space-y-3">
             <div className="p-3 bg-clay-pale/50 rounded-xl border border-clay/10">
               <p className="text-xs text-charcoal text-center">
-                💡 Prices shown for reference — contact the artist directly to order, negotiate, or request custom work.
+                💡 Contact the artist directly to order, negotiate, or request custom work.
               </p>
             </div>
             <p className="text-sm font-medium text-charcoal">Interested? Reach out directly:</p>
@@ -85,13 +86,13 @@ export default async function ListingPage({ params }: { params: { id: string } }
               {artist.whatsapp && (
                 <a href={`https://wa.me/${artist.whatsapp}?text=${whatsappMsg}`}
                   target="_blank" rel="noopener noreferrer"
-                  className="flex-1 py-3 rounded-full bg-green-600 text-white text-sm font-semibold text-center hover:bg-green-700 transition-colors">
+                  className="flex-1 py-3 rounded-full bg-[#25D366] text-white text-sm font-semibold text-center hover:bg-green-700 transition-colors">
                   💬 WhatsApp Seller
                 </a>
               )}
               {artist.email && (
                 <a href={`mailto:${artist.email}?subject=Inquiry: ${listing.title}`}
-                  className="flex-1 py-3 rounded-full border-2 border-clay text-clay text-sm font-semibold text-center hover:bg-clay hover:text-white transition-colors">
+                  className="flex-1 py-3 rounded-full border-2 border-clay text-clay text-sm font-semibold text-center hover:bg-clay hover:text-cream transition-colors">
                   ✉️ Email Seller
                 </a>
               )}

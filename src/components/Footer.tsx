@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { subscribeToNewsletter } from '@/app/actions/newsletter'
 
 export default function Footer() {
-  const [email, setEmail] = useState('')
+  const [email, setEmail]   = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
 
@@ -15,27 +15,74 @@ export default function Footer() {
     try {
       await subscribeToNewsletter(email)
       setStatus('success')
-      setMessage('You\'re in! We\'ll share new makers and craft stories with you.')
+      setMessage("You're in! We'll share new makers and craft stories with you.")
       setEmail('')
-    } catch (err: any) {
+    } catch (err: unknown) {
       setStatus('error')
-      setMessage(err.message || 'Something went wrong.')
+      setMessage(err instanceof Error ? err.message : 'Something went wrong.')
     }
   }
 
   return (
-    <footer className="bg-ink text-cream/70 mt-20">
-      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Brand */}
-        <div className="md:col-span-2">
-          <span className="font-display text-3xl text-clay">cr8un8</span>
-          <p className="mt-3 text-sm leading-relaxed max-w-xs">
-            Connecting independent artists with buyers who appreciate the beauty of handmade. India's local craft marketplace.
-          </p>
+    <footer style={{ background: '#1C0D04' }} className="mt-0">
+      <div className="max-w-7xl mx-auto px-4 pt-14 pb-6">
+
+        {/* Top grid */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+
+          {/* Brand — spans 2 cols on desktop */}
+          <div className="col-span-2">
+            <div className="border-2 border-clay rounded-lg px-3 py-1.5 font-brand text-sm text-clay leading-tight text-center inline-block mb-4">
+              Crafters<br />United
+            </div>
+            <p className="text-sm leading-relaxed max-w-xs" style={{ color: '#C8A898' }}>
+              Connecting handmade stories with people who value them.
+              Made with craft in India 🇮🇳
+            </p>
+          </div>
+
+          {/* Explore */}
+          <div>
+            <p className="text-cream text-xs font-bold uppercase tracking-widest mb-4">Explore</p>
+            <ul className="space-y-2.5">
+              {[
+                { href: '/listings', label: 'Shop' },
+                { href: '/artists',  label: 'Artists' },
+                { href: '/map',      label: 'Map' },
+              ].map(l => (
+                <li key={l.href}>
+                  <Link href={l.href} style={{ color: '#C8A898' }}
+                    className="text-sm hover:text-clay transition-colors">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* For Makers */}
+          <div>
+            <p className="text-cream text-xs font-bold uppercase tracking-widest mb-4">For Makers</p>
+            <ul className="space-y-2.5">
+              {[
+                { href: '/join',    label: 'Join Free' },
+                { href: '/artists', label: 'Meet the Makers' },
+              ].map(l => (
+                <li key={l.href}>
+                  <Link href={l.href} style={{ color: '#C8A898' }}
+                    className="text-sm hover:text-clay transition-colors">{l.label}</Link>
+                </li>
+              ))}
+              <li>
+                <a href="mailto:hello@cr8un8.com" style={{ color: '#C8A898' }}
+                  className="text-sm hover:text-clay transition-colors">Contact Us</a>
+              </li>
+            </ul>
+          </div>
+
           {/* Newsletter */}
-          <div className="mt-6">
-            <p className="text-cream text-xs font-semibold uppercase tracking-widest mb-3">
-              New makers, every week
+          <div>
+            <p className="text-cream text-xs font-bold uppercase tracking-widest mb-2">Newsletter</p>
+            <p className="text-xs leading-relaxed mb-3" style={{ color: '#C8A898' }}>
+              Weekly stories of craft &amp; community
             </p>
             {status === 'success' ? (
               <p className="text-green-400 text-sm">{message}</p>
@@ -47,14 +94,15 @@ export default function Footer() {
                   onChange={e => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   required
-                  className="flex-1 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-cream text-sm placeholder:text-cream/40 focus:outline-none focus:border-clay"
+                  className="flex-1 min-w-0 px-3 py-2.5 rounded-lg text-cream text-sm placeholder:text-[#6B4226] focus:outline-none focus:ring-1 focus:ring-clay"
+                  style={{ background: '#3A1C0C', border: '1px solid #8F4628' }}
                 />
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="px-5 py-2 rounded-full bg-clay text-white text-sm font-medium hover:bg-clay-light transition-colors disabled:opacity-50 whitespace-nowrap"
+                  className="px-3 py-2.5 rounded-lg bg-clay text-cream text-sm font-bold hover:bg-clay-dark transition-colors disabled:opacity-50 whitespace-nowrap"
                 >
-                  {status === 'loading' ? '...' : 'Subscribe'}
+                  {status === 'loading' ? '…' : '→'}
                 </button>
               </form>
             )}
@@ -64,33 +112,15 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Discover */}
-        <div>
-          <h4 className="text-cream text-xs font-semibold uppercase tracking-widest mb-4">Discover</h4>
-          <ul className="space-y-2 text-sm">
-            <li><Link href="/artists" className="hover:text-clay transition-colors">Browse Artists</Link></li>
-            <li><Link href="/listings" className="hover:text-clay transition-colors">Shop Listings</Link></li>
-            <li><Link href="/map" className="hover:text-clay transition-colors">Map View</Link></li>
-          </ul>
+        {/* Bottom bar */}
+        <div className="border-t pt-5 flex justify-between items-center flex-wrap gap-3" style={{ borderColor: '#3A1C0C' }}>
+          <p className="text-xs" style={{ color: '#6B4226' }}>
+            © {new Date().getFullYear()} CraftersUnited · All rights reserved
+          </p>
+          <p className="text-xs" style={{ color: '#6B4226' }}>
+            No fees · No algorithms · Just craft
+          </p>
         </div>
-
-        {/* For Artists */}
-        <div>
-          <h4 className="text-cream text-xs font-semibold uppercase tracking-widest mb-4">For Artists</h4>
-          <ul className="space-y-2 text-sm">
-            <li><Link href="/join" className="hover:text-clay transition-colors">Join as Artist</Link></li>
-            <li><Link href="/artists" className="hover:text-clay transition-colors">Meet the makers</Link></li>
-            <li>
-              <a href="mailto:hello@cr8un8.com" className="hover:text-clay transition-colors">
-                Contact us
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="border-t border-white/10 px-4 py-4 max-w-7xl mx-auto flex justify-between items-center">
-        <p className="text-xs">© {new Date().getFullYear()} CraftersUnited</p>
       </div>
     </footer>
   )

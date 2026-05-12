@@ -22,6 +22,7 @@ export default async function ArtistPage({ params }: { params: { id: string } })
     <main className="max-w-4xl mx-auto px-4 py-10">
       <Link href="/artists" className="text-sm text-clay hover:underline mb-6 inline-block">← Back to Artists</Link>
 
+      {/* Artist header */}
       <div className="flex flex-col sm:flex-row gap-6 mb-8 p-6 bg-sand rounded-2xl border border-sand-dark">
         <div className="flex-shrink-0">
           <SafeImage
@@ -47,20 +48,20 @@ export default async function ArtistPage({ params }: { params: { id: string } })
             {artist.whatsapp && (
               <a href={`https://wa.me/${artist.whatsapp}?text=${whatsappMsg}`}
                 target="_blank" rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors">
+                className="px-5 py-2.5 rounded-full bg-[#25D366] text-white text-sm font-semibold hover:bg-green-700 transition-colors">
                 💬 WhatsApp
               </a>
             )}
             {artist.instagram && (
               <a href={`https://instagram.com/${artist.instagram}`}
                 target="_blank" rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium hover:opacity-90 transition-opacity">
+                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold hover:opacity-90 transition-opacity">
                 📸 Instagram
               </a>
             )}
             {artist.email && (
               <a href={`mailto:${artist.email}`}
-                className="px-5 py-2.5 rounded-full border-2 border-clay text-clay text-sm font-medium hover:bg-clay hover:text-white transition-colors">
+                className="px-5 py-2.5 rounded-full border-2 border-clay text-clay text-sm font-semibold hover:bg-clay hover:text-cream transition-colors">
                 ✉️ Email
               </a>
             )}
@@ -68,6 +69,7 @@ export default async function ArtistPage({ params }: { params: { id: string } })
         </div>
       </div>
 
+      {/* Listings */}
       <div>
         <h2 className="font-display text-3xl text-ink mb-4">
           Listings ({artist.listings?.length || 0})
@@ -76,11 +78,11 @@ export default async function ArtistPage({ params }: { params: { id: string } })
           <div className="text-center py-12 bg-sand rounded-2xl border border-sand-dark">
             <div className="text-4xl mb-3">🛍️</div>
             <p className="text-charcoal font-medium mb-1">No listings yet</p>
-            <p className="text-muted text-sm mb-4">This artist hasn't added any items — reach out directly to enquire.</p>
+            <p className="text-muted text-sm mb-4">Reach out directly to enquire about available work.</p>
             {artist.whatsapp && (
               <a href={`https://wa.me/${artist.whatsapp}?text=${whatsappMsg}`}
                 target="_blank" rel="noopener noreferrer"
-                className="inline-block px-6 py-2.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors">
+                className="inline-block px-6 py-2.5 rounded-full bg-[#25D366] text-white text-sm font-semibold hover:bg-green-700 transition-colors">
                 💬 Enquire on WhatsApp
               </a>
             )}

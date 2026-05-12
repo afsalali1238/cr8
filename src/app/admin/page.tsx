@@ -224,9 +224,6 @@ export default function AdminDashboard() {
                                       </div>
                                     )}
                                   </div>
-                                  <div className="text-[10px] text-muted leading-relaxed">
-                                    Application submitted on {new Date(artist.created_at || '').toLocaleDateString()}
-                                  </div>
                                 </div>
                               </div>
                             </motion.div>

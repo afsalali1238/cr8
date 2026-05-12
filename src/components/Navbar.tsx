@@ -1,8 +1,7 @@
-// src/components/Navbar.tsx
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const links = [
   { href: '/artists',  label: 'Artists' },
@@ -12,20 +11,37 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen]       = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const isHome = pathname === '/'
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-cream border-b border-sand-dark">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 ${
+        scrolled || !isHome
+          ? 'bg-cream/95 backdrop-blur-md border-b border-sand-dark shadow-sm'
+          : 'bg-transparent border-b border-transparent'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
 
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-display text-3xl text-clay leading-none">cr8un8</span>
-          <span className="hidden sm:block text-xs text-muted font-medium tracking-widest uppercase mt-1">
-            crafters united
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="border-2 border-clay rounded-lg px-2.5 py-1 font-brand text-sm text-clay leading-tight text-center">
+            Crafters<br />United
+          </div>
+          <span className="hidden sm:block text-xs text-muted font-medium tracking-widest uppercase">
+            cr8un8.com
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-5">
+        <nav className="hidden md:flex items-center gap-6">
           {links.map(({ href, label }) => (
             <Link
               key={href}
@@ -39,10 +55,10 @@ export default function Navbar() {
           ))}
           <Link
             href="/join"
-            className="ml-1 px-4 py-2 rounded-full bg-clay text-white text-sm font-medium
-                       hover:bg-clay-light transition-colors"
+            className="ml-1 px-5 py-2 rounded-full bg-clay text-cream text-sm font-semibold
+                       hover:bg-clay-dark transition-colors shadow-md shadow-clay/20"
           >
-            Join as Artist
+            Join Free
           </Link>
         </nav>
 
@@ -62,7 +78,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-cream border-b border-sand-dark px-4 py-4 flex flex-col gap-3">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-cream/98 backdrop-blur-md border-b border-sand-dark px-4 py-4 flex flex-col gap-3">
           {links.map(({ href, label }) => (
             <Link
               key={href}
@@ -78,9 +94,9 @@ export default function Navbar() {
           <Link
             href="/join"
             onClick={() => setOpen(false)}
-            className="px-4 py-2.5 rounded-full bg-clay text-white text-sm font-medium text-center mt-1"
+            className="px-4 py-2.5 rounded-full bg-clay text-cream text-sm font-semibold text-center mt-1"
           >
-            Join as Artist
+            Join Free
           </Link>
         </div>
       )}

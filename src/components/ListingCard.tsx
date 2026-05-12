@@ -12,16 +12,13 @@ export default function ListingCard({ listing }: { listing: Listing }) {
     : false
 
   return (
-    <motion.div
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3 }}
-    >
+    <motion.div whileHover={{ y: -8 }} transition={{ duration: 0.3 }}>
       <Link
         href={`/listings/${listing.id}`}
         className="block group bg-cream rounded-2xl overflow-hidden border border-sand-dark
                    hover:border-clay hover:shadow-xl hover:shadow-clay/10 transition-all duration-300 h-full"
       >
-        <div className="relative h-60 bg-sand-dark overflow-hidden">
+        <div className="relative h-60 bg-sand overflow-hidden">
           <SafeImage
             src={listing.image_url || ''}
             alt={listing.title}
@@ -29,25 +26,22 @@ export default function ListingCard({ listing }: { listing: Listing }) {
             fallback={<ImageFallback className="w-full h-full" variant="listing" />}
           />
           {isNew && (
-            <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider shadow-sm">
+            <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-sage text-white text-[10px] font-bold uppercase tracking-wider">
               New
             </span>
           )}
           {listing.price && (
-            <span className="absolute bottom-3 right-3 px-3 py-1 rounded-lg bg-ink/80 backdrop-blur-md
-                             text-sm font-semibold text-white">
-              ₹{listing.price}
+            <span className="absolute bottom-3 right-3 px-3 py-1 rounded-lg bg-ink/80 backdrop-blur-md text-sm font-semibold text-cream">
+              ₹{listing.price.toLocaleString('en-IN')}
             </span>
           )}
         </div>
         <div className="p-4">
-          <h3 className="font-semibold text-ink text-base line-clamp-1">{listing.title}</h3>
-          <p className="text-xs text-muted mt-1 line-clamp-2 leading-relaxed">
-            {listing.description}
-          </p>
-          <p className="text-xs text-clay font-medium mt-3 group-hover:underline">
-            Details →
-          </p>
+          <h3 className="font-semibold text-ink text-sm line-clamp-2 leading-snug">{listing.title}</h3>
+          {listing.category && (
+            <p className="text-xs text-clay font-medium mt-1.5">{listing.category}</p>
+          )}
+          <p className="text-xs text-muted mt-2 group-hover:text-clay transition-colors">View listing →</p>
         </div>
       </Link>
     </motion.div>

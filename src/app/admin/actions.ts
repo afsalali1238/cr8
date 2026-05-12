@@ -7,7 +7,6 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'craftersunitedin@gmail.com'
 export async function approveArtist(id: string) {
   const supabase = createServerClient()
 
-  // Verify the caller is the site owner
   const { data: { session } } = await supabase.auth.getSession()
   if (!session || session.user.email !== ADMIN_EMAIL) throw new Error('Unauthorized')
 

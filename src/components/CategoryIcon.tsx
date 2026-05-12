@@ -1,5 +1,4 @@
 // CategoryIcon.tsx — minimal line-art SVG for each craft category
-// Stroke: terracotta (#c2440f), fill: warm cream (#fdf0e8)
 import type { ReactElement } from 'react'
 
 interface Props {
@@ -9,8 +8,8 @@ interface Props {
 
 export default function CategoryIcon({ slug, size = 48 }: Props) {
   const s = size
-  const stroke = '#c2440f'
-  const fill = '#fdf0e8'
+  const stroke = '#B5603A'
+  const fill = '#F2DDD1'
   const sw = '1.5'
 
   const icons: Record<string, ReactElement> = {
@@ -19,7 +18,6 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
         <circle cx="18" cy="30" r="10" stroke={stroke} strokeWidth={sw} fill={fill}/>
         <circle cx="14" cy="32" r="2" fill={stroke} opacity=".3"/>
         <circle cx="20" cy="28" r="1.5" fill={stroke} opacity=".3"/>
-        <circle cx="22" cy="33" r="1.5" fill={stroke} opacity=".2"/>
         <line x1="25" y1="23" x2="38" y2="10" stroke={stroke} strokeWidth="2" strokeLinecap="round"/>
         <path d="M25 23 l-3 3 3-1 1-3z" fill={stroke}/>
         <path d="M36 8 q2-2 4-1 t1 4" stroke={stroke} strokeWidth={sw} strokeLinecap="round" fill={fill}/>
@@ -49,7 +47,6 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
         <path d="M20 10 h20 a2 2 0 0 1 2 2 v20 a2 2 0 0 1-2 2 h-20 l-10-12 z" stroke={stroke} strokeWidth={sw} strokeLinejoin="round" fill={fill}/>
         <circle cx="36" cy="16" r="2" stroke={stroke} strokeWidth="1" fill={fill}/>
         <path d="M26 22 c0-2 3-4 4 0 c1-4 4-2 4 0 c0 3-4 5-4 5 s-4-2-4-5z" stroke={stroke} strokeWidth="1" fill={stroke} opacity=".3"/>
-        <line x1="10" y1="22" x2="30" y2="10" stroke={stroke} strokeWidth="1" strokeLinecap="round" opacity=".3"/>
       </svg>
     ),
     'jewellery': (

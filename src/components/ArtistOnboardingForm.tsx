@@ -251,20 +251,10 @@ export default function ArtistOnboardingForm() {
 
       <button 
         type="submit" 
-        disabled={isSubmitting}
-        className="w-full py-4 rounded-full bg-clay text-white font-semibold text-lg hover:bg-clay-light transition-all shadow-xl shadow-clay/30 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-4 rounded-full bg-clay text-cream font-semibold text-lg hover:bg-clay-dark transition-colors shadow-lg shadow-clay/20 disabled:opacity-50"
       >
-        {isSubmitting ? (
-          <span className="flex items-center justify-center gap-2">
-            <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            Submitting...
-          </span>
-        ) : 'Submit Application'}
+        {isSubmitting ? 'Submitting…' : 'Apply to Join →'}
       </button>
-
-      <p className="text-center text-xs text-muted italic">
-        By submitting, you agree to showcase your work on CraftersUnited.
-      </p>
     </form>
   )
 }

@@ -243,7 +243,7 @@ export default function PostDetail({ post, initialComments, communitySlug }: Pro
               className="px-6 py-2.5 rounded-full bg-clay text-white text-sm font-medium
                          hover:bg-clay-light transition-colors disabled:opacity-50"
             >
-              {isSubmitting ? 'Posting...' : 'Post Comment'}
+              {isSubmitting ? 'Posting…' : 'Post Comment'}
             </button>
           </form>
         </div>

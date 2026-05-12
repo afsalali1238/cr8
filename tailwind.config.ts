@@ -10,19 +10,40 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        clay:    { DEFAULT: '#c2440f', light: '#e8601e', pale: '#fdf0e8' },
-        cream:   '#fdf8f3',
-        sand:    { DEFAULT: '#f5ead8', dark: '#e8d5b7' },
-        ink:     '#1a1208',
-        charcoal:'#3d3020',
-        muted:   '#8a7560',
+        clay: {
+          DEFAULT: '#B5603A',
+          dark:    '#8F4628',
+          light:   '#D4784E',
+          pale:    '#F2DDD1',
+        },
+        cream:   '#FFFAF5',
+        sand: {
+          DEFAULT: '#F4EDE4',
+          dark:    '#E8D5C0',
+        },
+        ink:     '#231209',
+        charcoal:'#5C3520',
+        muted:   '#9A7060',
+        gold: {
+          DEFAULT: '#C49A3C',
+          light:   '#FBF3DC',
+        },
+        sage: {
+          DEFAULT: '#6B8061',
+          light:   '#EAF0E6',
+        },
+        footer: {
+          bg:  '#1C0D04',
+          mid: '#3A1C0C',
+        },
       },
       fontFamily: {
-        display: ['Caveat', 'cursive'],
-        sans:    ['DM Sans', 'sans-serif'],
+        display: ['"Playfair Display"', 'Georgia', 'Times New Roman', 'serif'],
+        brand:   ['Caveat', 'cursive'],
+        sans:    ['"DM Sans"', 'Inter', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
-        xl: '1rem',
+        xl:  '1rem',
         '2xl': '1.5rem',
       },
     },
