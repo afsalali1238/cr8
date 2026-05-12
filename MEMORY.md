@@ -9,9 +9,9 @@
 ## Project Status
 
 **Current Phase:** Phase 1 — MVP (Buyer ↔ Seller Connection, No Payments)
-**Build Status:** ✅ Phase 1 MVP Complete & High-Fidelity Polished
+**Build Status:** ✅ Design upgrade committed (`556e859`) — push pending
 **Domain:** cr8un8.com (configured)
-**Last Updated:** 2026-05-09
+**Last Updated:** 2026-05-12
 **Active Sprint Goal:** Soft launch with premium polish
 
 ---
@@ -118,6 +118,16 @@
 ### Session 3 — Final Wiring & Tailwind Fixes (2026-05-09)
 - **Wiring & Fixes**: Fixed Tailwind CSS missing config (`postcss.config.js`), fixed CSS variables/globals layout, fully resolved prerendering errors.
 - **Completion**: Manually verified all 8 routes render correctly with zero errors.
+
+### Session 5 — Design Upgrade from Master Brief (2026-05-12)
+- **Design tokens**: Updated to master brief palette — terracotta `#B5603A`, Playfair Display headings, gold `#C49A3C`, sage `#6B8061`, footer bg `#1C0D04`
+- **Navbar**: Transparent on homepage hero, goes solid/blurred on scroll — matches `cr8un8_final.jsx` spec
+- **Homepage (page.tsx)**: Added trust bar, floating "Latest Sale" hero card, dual buyer/maker "How It Works", Maker Story dark banner, Testimonials section, Final CTA section
+- **FeaturedMakersGrid.tsx** (new): Client component with WhatsApp slide-up CTA, wishlist heart, verified shield badge, hover animations
+- **Footer**: 5-column layout — Brand, Explore, For Makers, Newsletter
+- **Mass file repair**: Fixed 9 truncated components + 4 pages + 3 config files (all had missing closing tags from prior null-byte rewrites)
+- **Commit**: `556e859` — 23 files, 0 null bytes, tsc --noEmit clean
+- **Push**: Pending user running `git push origin main` from Windows terminal
 
 ### Session 4 — Realism, Documentation & Performance (2026-05-10)
 - **Realism Overhaul**: Replaced fake artist seeds with realistic Indian artisan profiles (Anita Nair, Vikram Sethi, Sanya Kapoor) featuring professional bios and Unsplash photography.

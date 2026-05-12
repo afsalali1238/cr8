@@ -261,4 +261,3 @@ export default function ArtistsClientPage({ artists, categories, states }: Props
     </main>
   )
 }
-    
