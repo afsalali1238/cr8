@@ -61,4 +61,11 @@ export async function middleware(request: NextRequest) {
       loginUrl.searchParams.set('redirect', request.nextUrl.pathname)
       return NextResponse.redirect(loginUrl)
     }
- 
+  }
+
+  return response
+}
+
+export const config = {
+  matcher: ['/admin/:path*', '/join'],
+}

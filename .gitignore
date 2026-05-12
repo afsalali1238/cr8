@@ -24,3 +24,16 @@ yarn-error.log*
 
 # Vercel
 .vercel
+
+# Personal files — never commit
+Downloads/
+
+# Dev scripts with hardcoded credentials
+scripts/
+test_*.js
+scratch.js
+commit_msgs.txt
+
+# Orphaned experiment directories — not part of the app
+cr8un8-map/
+cr8un8-social/

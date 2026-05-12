@@ -2,6 +2,8 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
+import SafeImage from './SafeImage'
 import { createClient } from '@/lib/supabase/client'
 
 interface Community {
@@ -236,10 +238,11 @@ export default function CommunityFeed({ community, initialPosts }: Props) {
                 {/* Post image */}
                 {post.image_url && (
                   <div className="rounded-xl overflow-hidden h-48 mb-3 bg-sand">
-                    <img
+                    <SafeImage
                       src={post.image_url}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
                     />
                   </div>
                 )}
@@ -255,8 +258,12 @@ export default function CommunityFeed({ community, initialPosts }: Props) {
                 <div className="flex items-center gap-3 text-xs text-muted">
                   <div className="flex items-center gap-1.5">
                     {post.author_photo ? (
-                      <img src={post.author_photo} alt={post.author_name}
-                        className="w-5 h-5 rounded-full object-cover" />
+                      <SafeImage 
+                        src={post.author_photo} 
+                        alt={post.author_name}
+                        className="w-5 h-5 rounded-full object-cover" 
+                        fallback={<div className="w-5 h-5 rounded-full bg-sand-dark flex items-center justify-center text-[10px]">🎨</div>}
+                      />
                     ) : (
                       <div className="w-5 h-5 rounded-full bg-sand-dark flex items-center justify-center text-[10px]">
                         🎨

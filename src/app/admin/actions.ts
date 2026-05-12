@@ -26,4 +26,11 @@ export async function toggleArtistActive(id: string, isActive: boolean) {
   const { data: { session } } = await supabase.auth.getSession()
   if (!session || session.user.email !== ADMIN_EMAIL) throw new Error('Unauthorized')
 
-  const { error } = await supa
+  const { error } = await supabase
+    .from('artists')
+    .update({ is_active: isActive })
+    .eq('id', id)
+
+  if (error) throw error
+  return true
+}

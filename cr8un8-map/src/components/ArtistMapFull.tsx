@@ -28,7 +28,6 @@ export default function ArtistMapFull({ artists, activeId, onPinClick }: Props) 
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<Record<string, any>>({})
-  const leafletRef = useRef<any>(null)
 
   useEffect(() => {
     // Dynamically import leaflet only client-side
@@ -38,8 +37,6 @@ export default function ArtistMapFull({ artists, activeId, onPinClick }: Props) 
     async function initMap() {
       // @ts-ignore
       L = (await import('leaflet')).default
-      leafletRef.current = L
-      // @ts-ignore
       await import('leaflet/dist/leaflet.css')
       // @ts-ignore
       await import('leaflet.markercluster/dist/MarkerCluster.css')
@@ -125,7 +122,7 @@ export default function ArtistMapFull({ artists, activeId, onPinClick }: Props) 
 
         // Popup content — mini profile card
         const photoHtml = artist.photo_url
-          ? `<img src="${artist.photo_url}" onerror="this.outerHTML='<div style=\\'width:100%;height:72px;background:#f5ead8;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;\\'>🎨</div>'" style="width:100%;height:72px;object-fit:cover;border-radius:8px 8px 0 0;" />`
+          ? `<img src="${artist.photo_url}" style="width:100%;height:72px;object-fit:cover;border-radius:8px 8px 0 0;" />`
           : `<div style="width:100%;height:72px;background:#f5ead8;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;font-size:28px;">🎨</div>`
 
         const listingBadge = artist.listing_count !== undefined
@@ -184,25 +181,25 @@ export default function ArtistMapFull({ artists, activeId, onPinClick }: Props) 
 
   // When activeId changes, update pin color and open popup
   useEffect(() => {
-    const L = leafletRef.current
-    if (!mapInstanceRef.current || !L) return
+    if (!mapInstanceRef.current) return
     Object.entries(markersRef.current).forEach(([id, marker]) => {
       const isActive = id === activeId
-      marker.setIcon(L.divIcon({
+      marker.setIcon({
         className: '',
         html: `<div style="
           width: 32px; height: 32px;
           background: ${isActive ? '#e8601e' : '#c2440f'};
           border: 3px solid white;
           border-radius: 50% 50% 50% 0;
+          transform: rotate(-45deg);
           box-shadow: 0 2px 8px rgba(194,68,15,${isActive ? '0.6' : '0.4'});
           transform: rotate(-45deg) scale(${isActive ? '1.3' : '1'});
           transition: all 0.2s;
         "></div>`,
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-        popupAnchor: [0, -36],
-      }))
+        iconSize: [32, 32] as [number, number],
+        iconAnchor: [16, 32] as [number, number],
+        popupAnchor: [0, -36] as [number, number],
+      })
       if (isActive) {
         marker.openPopup()
         mapInstanceRef.current?.panTo(marker.getLatLng(), { animate: true })

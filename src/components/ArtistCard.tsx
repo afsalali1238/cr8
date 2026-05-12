@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import type { Artist } from '@/types'
+import SafeImage from './SafeImage'
 
 export default function ArtistCard({ artist }: { artist: Partial<Artist> }) {
   return (
@@ -16,15 +17,12 @@ export default function ArtistCard({ artist }: { artist: Partial<Artist> }) {
                    hover:border-clay hover:shadow-xl hover:shadow-clay/10 transition-all duration-300 h-full"
       >
         <div className="relative h-52 bg-sand-dark overflow-hidden">
-          {artist.photo_url ? (
-            <img
-              src={artist.photo_url}
-              alt={artist.name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-6xl">🎨</div>
-          )}
+          <SafeImage
+            src={artist.photo_url || ''}
+            alt={artist.name || ''}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            fallback={<div className="w-full h-full flex items-center justify-center text-6xl">🎨</div>}
+          />
           {/* category badge */}
           <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-cream/90 backdrop-blur-sm
                            text-xs font-medium text-clay">

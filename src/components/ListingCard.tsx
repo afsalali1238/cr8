@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import type { Listing } from '@/types'
+import SafeImage from './SafeImage'
 
 export default function ListingCard({ listing }: { listing: Listing }) {
   return (
@@ -16,15 +17,12 @@ export default function ListingCard({ listing }: { listing: Listing }) {
                    hover:border-clay hover:shadow-xl hover:shadow-clay/10 transition-all duration-300 h-full"
       >
         <div className="relative h-60 bg-sand-dark overflow-hidden">
-          {listing.image_url ? (
-            <img
-              src={listing.image_url}
-              alt={listing.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-5xl">🎁</div>
-          )}
+          <SafeImage
+            src={listing.image_url || ''}
+            alt={listing.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            fallback={<div className="w-full h-full flex items-center justify-center text-5xl">🎁</div>}
+          />
           {listing.price && (
             <span className="absolute bottom-3 right-3 px-3 py-1 rounded-lg bg-ink/80 backdrop-blur-md
                              text-sm font-semibold text-white">

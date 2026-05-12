@@ -1,6 +1,7 @@
 import { createServerClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import SafeImage from '@/components/SafeImage'
 
 export default async function ListingPage({ params }: { params: { id: string } }) {
   const supabase = createServerClient()
@@ -27,11 +28,12 @@ export default async function ListingPage({ params }: { params: { id: string } }
       <div className="grid md:grid-cols-2 gap-10">
         {/* Image */}
         <div className="rounded-2xl overflow-hidden bg-sand aspect-square">
-          {listing.image_url ? (
-            <img src={listing.image_url} alt={listing.title} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-8xl">🎨</div>
-          )}
+          <SafeImage 
+            src={listing.image_url || ''} 
+            alt={listing.title} 
+            className="w-full h-full object-cover" 
+            fallback={<div className="w-full h-full flex items-center justify-center text-8xl">🎨</div>}
+          />
         </div>
 
         {/* Details */}
@@ -53,11 +55,12 @@ export default async function ListingPage({ params }: { params: { id: string } }
           <div className="p-4 bg-sand rounded-xl border border-sand-dark mb-6">
             <p className="text-xs text-muted uppercase tracking-wider mb-2">Sold by</p>
             <div className="flex items-center gap-3">
-              {artist.photo_url ? (
-                <img src={artist.photo_url} alt={artist.name} className="w-10 h-10 rounded-full object-cover" />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-sand-dark flex items-center justify-center">🎨</div>
-              )}
+              <SafeImage 
+                src={artist.photo_url || ''} 
+                alt={artist.name} 
+                className="w-10 h-10 rounded-full object-cover" 
+                fallback={<div className="w-10 h-10 rounded-full bg-sand-dark flex items-center justify-center">🎨</div>}
+              />
               <div>
                 <p className="font-semibold text-ink text-sm">{artist.name}</p>
                 <p className="text-xs text-muted">{artist.city}, {artist.state}</p>

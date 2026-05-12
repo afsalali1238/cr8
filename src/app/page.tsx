@@ -1,5 +1,6 @@
 import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import SafeImage from '@/components/SafeImage'
 
 export const revalidate = 60
 
@@ -117,12 +118,12 @@ export default async function HomePage() {
                 <Link key={artist.id} href={`/artists/${artist.id}`}
                   className="group bg-cream rounded-2xl overflow-hidden border border-sand-dark hover:border-clay hover:shadow-lg hover:shadow-clay/10 transition-all duration-300">
                   <div className="relative h-52 bg-sand overflow-hidden">
-                    {artist.photo_url ? (
-                      <img src={artist.photo_url} alt={artist.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-6xl">🎨</div>
-                    )}
+                    <SafeImage
+                      src={artist.photo_url || ''}
+                      alt={artist.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fallback={<div className="w-full h-full flex items-center justify-center text-6xl">🎨</div>}
+                    />
                     {artist.category && (
                       <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-cream/90 text-xs font-medium text-clay">
                         {artist.category}

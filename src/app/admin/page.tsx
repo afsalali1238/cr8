@@ -2,6 +2,8 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import SafeImage from '@/components/SafeImage'
 import { createClient } from '@/lib/supabase/client'
 import { approveArtist, toggleArtistActive } from './actions'
 import type { Artist } from '@/types'
@@ -125,7 +127,12 @@ export default function AdminDashboard() {
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 rounded-2xl bg-sand-dark overflow-hidden flex-shrink-0 relative border-2 border-white shadow-sm">
                             {artist.photo_url ? (
-                              <img src={artist.photo_url} alt={artist.name} className="w-full h-full object-cover" />
+                              <SafeImage 
+                                src={artist.photo_url} 
+                                alt={artist.name} 
+                                className="w-full h-full object-cover" 
+                                fallback={<div className="w-full h-full flex items-center justify-center text-xl">👤</div>}
+                              />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-xl">👤</div>
                             )}
@@ -218,4 +225,22 @@ export default function AdminDashboard() {
                                     )}
                                   </div>
                                   <div className="text-[10px] text-muted leading-relaxed">
-                                    Application submitted on {new Date(artist.created_at || '').toLocaleDateString
+                                    Application submitted on {new Date(artist.created_at || '').toLocaleDateString()}
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          </td>
+                        </tr>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  )
+}

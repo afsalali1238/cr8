@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import MapWrapper from './MapWrapper'
-import SafeImage from './SafeImage'
 import type { MapArtist } from './ArtistMapFull'
 
 interface Artist {
@@ -190,11 +189,10 @@ export default function ListingsClientPage({ listings, categories }: Props) {
                         onMouseLeave={() => setHoveredArtistId(null)}
                       >
                         {artist.photo_url ? (
-                          <SafeImage
+                          <img
                             src={artist.photo_url}
                             alt={artist.name}
                             className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                            fallback={<div className="w-10 h-10 rounded-full bg-sand-dark flex items-center justify-center text-lg flex-shrink-0">🎨</div>}
                           />
                         ) : (
                           <div className="w-10 h-10 rounded-full bg-sand-dark flex items-center justify-center text-lg flex-shrink-0">🎨</div>
@@ -225,11 +223,10 @@ export default function ListingsClientPage({ listings, categories }: Props) {
                           >
                             <div className="relative h-36 bg-sand overflow-hidden">
                               {listing.image_url ? (
-                                <SafeImage
+                                <img
                                   src={listing.image_url}
                                   alt={listing.title}
                                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                  fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
                                 />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>
@@ -251,7 +248,7 @@ export default function ListingsClientPage({ listings, categories }: Props) {
                 {/* Artists without location data — show at bottom */}
                 {(() => {
                   const noLocationListings = filtered.filter(l => !l.artist.lat || !l.artist.lng)
-                  const uniqueArtistIds = Array.from(new Set(noLocationListings.map(l => l.artist.id)))
+                  const uniqueArtistIds = [...new Set(noLocationListings.map(l => l.artist.id))]
                   if (uniqueArtistIds.length === 0) return null
 
                   return (
@@ -267,11 +264,10 @@ export default function ListingsClientPage({ listings, categories }: Props) {
                           >
                             <div className="relative h-36 bg-sand overflow-hidden">
                               {listing.image_url ? (
-                                <SafeImage
+                                <img
                                   src={listing.image_url}
                                   alt={listing.title}
                                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                  fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
                                 />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>

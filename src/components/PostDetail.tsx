@@ -2,6 +2,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import SafeImage from './SafeImage'
 import { createClient } from '@/lib/supabase/client'
 
 interface Comment {
@@ -100,8 +101,12 @@ export default function PostDetail({ post, initialComments, communitySlug }: Pro
         {/* Author + date */}
         <div className="flex items-center gap-3 text-sm text-muted">
           {post.author_photo ? (
-            <img src={post.author_photo} alt={post.author_name}
-              className="w-8 h-8 rounded-full object-cover" />
+            <SafeImage 
+              src={post.author_photo} 
+              alt={post.author_name}
+              className="w-8 h-8 rounded-full object-cover" 
+              fallback={<div className="w-8 h-8 rounded-full bg-sand-dark flex items-center justify-center text-sm">🎨</div>}
+            />
           ) : (
             <div className="w-8 h-8 rounded-full bg-sand-dark flex items-center justify-center text-sm">
               🎨
@@ -122,7 +127,12 @@ export default function PostDetail({ post, initialComments, communitySlug }: Pro
       {/* Post image */}
       {post.image_url && (
         <div className="rounded-2xl overflow-hidden mb-6 max-h-96 bg-sand">
-          <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
+          <SafeImage 
+            src={post.image_url} 
+            alt={post.title} 
+            className="w-full h-full object-cover" 
+            fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
+          />
         </div>
       )}
 
@@ -173,8 +183,12 @@ export default function PostDetail({ post, initialComments, communitySlug }: Pro
               >
                 <div className="flex items-center gap-2 mb-2">
                   {comment.author_photo ? (
-                    <img src={comment.author_photo} alt={comment.author_name}
-                      className="w-6 h-6 rounded-full object-cover" />
+                    <SafeImage 
+                      src={comment.author_photo} 
+                      alt={comment.author_name}
+                      className="w-6 h-6 rounded-full object-cover" 
+                      fallback={<div className="w-6 h-6 rounded-full bg-sand-dark flex items-center justify-center text-xs">🎨</div>}
+                    />
                   ) : (
                     <div className="w-6 h-6 rounded-full bg-sand-dark flex items-center justify-center text-xs">
                       🎨

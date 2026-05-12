@@ -1,6 +1,7 @@
 import { createServerClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import SafeImage from '@/components/SafeImage'
 
 export default async function ArtistPage({ params }: { params: { id: string } }) {
   const supabase = createServerClient()
@@ -23,12 +24,12 @@ export default async function ArtistPage({ params }: { params: { id: string } })
       {/* Profile header */}
       <div className="flex flex-col sm:flex-row gap-6 mb-8 p-6 bg-sand rounded-2xl border border-sand-dark">
         <div className="flex-shrink-0">
-          {artist.photo_url ? (
-            <img src={artist.photo_url} alt={artist.name}
-              className="w-32 h-32 rounded-full object-cover border-4 border-cream shadow-md" />
-          ) : (
-            <div className="w-32 h-32 rounded-full bg-sand-dark flex items-center justify-center text-5xl">🎨</div>
-          )}
+          <SafeImage 
+            src={artist.photo_url || ''} 
+            alt={artist.name}
+            className="w-32 h-32 rounded-full object-cover border-4 border-cream shadow-md" 
+            fallback={<div className="w-32 h-32 rounded-full bg-sand-dark flex items-center justify-center text-5xl">🎨</div>}
+          />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-start gap-2 mb-1">
@@ -85,12 +86,12 @@ export default async function ArtistPage({ params }: { params: { id: string } })
               <Link key={listing.id} href={`/listings/${listing.id}`}
                 className="group block rounded-xl overflow-hidden border border-sand-dark bg-cream hover:border-clay hover:shadow-md transition-all duration-200">
                 <div className="h-40 bg-sand overflow-hidden">
-                  {listing.image_url ? (
-                    <img src={listing.image_url} alt={listing.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>
-                  )}
+                  <SafeImage 
+                    src={listing.image_url || ''} 
+                    alt={listing.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
+                  />
                 </div>
                 <div className="p-3">
                   <p className="font-semibold text-ink text-sm line-clamp-1">{listing.title}</p>
