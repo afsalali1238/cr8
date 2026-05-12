@@ -15,7 +15,6 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
 
   const icons: Record<string, ReactElement> = {
     'art-crafts': (
-      // Paintbrush crossing a palette
       <svg width={s} height={s} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <circle cx="18" cy="30" r="10" stroke={stroke} strokeWidth={sw} fill={fill}/>
         <circle cx="14" cy="32" r="2" fill={stroke} opacity=".3"/>
@@ -27,7 +26,6 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
       </svg>
     ),
     'home-decor': (
-      // Simple house with a small plant inside
       <svg width={s} height={s} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M8 22 L24 9 L40 22" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M12 22 v16 h24 v-16" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" fill={fill}/>
@@ -38,7 +36,6 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
       </svg>
     ),
     'collectibles': (
-      // Ornate vase / antique pot
       <svg width={s} height={s} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M17 10 h14" stroke={stroke} strokeWidth={sw} strokeLinecap="round"/>
         <path d="M17 10 c-4 4-6 8-6 13 0 8 6 14 13 14 s13-6 13-14 c0-5-2-9-6-13" stroke={stroke} strokeWidth={sw} strokeLinejoin="round" fill={fill}/>
@@ -48,7 +45,6 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
       </svg>
     ),
     'personalized': (
-      // Gift tag with a heart
       <svg width={s} height={s} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M20 10 h20 a2 2 0 0 1 2 2 v20 a2 2 0 0 1-2 2 h-20 l-10-12 z" stroke={stroke} strokeWidth={sw} strokeLinejoin="round" fill={fill}/>
         <circle cx="36" cy="16" r="2" stroke={stroke} strokeWidth="1" fill={fill}/>
@@ -57,7 +53,6 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
       </svg>
     ),
     'jewellery': (
-      // Necklace with a pendant drop
       <svg width={s} height={s} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M12 14 q12-10 24 0" stroke={stroke} strokeWidth={sw} strokeLinecap="round" fill="none"/>
         <path d="M12 14 q-4 8 0 14 l12 10 l12-10 q4-6 0-14" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" fill={fill}/>
@@ -66,7 +61,6 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
       </svg>
     ),
     'clothing': (
-      // Simple dress / garment silhouette
       <svg width={s} height={s} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M18 8 l-8 8 8 4 v20 h12 v-20 l8-4 -8-8" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" fill={fill}/>
         <path d="M18 8 q3 4 6 0 q3 4 6 0" stroke={stroke} strokeWidth={sw} strokeLinecap="round" fill={fill}/>
@@ -79,4 +73,7 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
   return icons[slug] ?? (
     <svg width={s} height={s} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <circle cx="24" cy="24" r="14" stroke={stroke} strokeWidth={sw} fill={fill}/>
-      <path d="M20 20 q4-6 8 0 q-4 6-8 0" stroke={stroke} strokeWidth="1
+      <path d="M20 20 q4-6 8 0 q-4 6-8 0" stroke={stroke} strokeWidth="1" strokeLinecap="round"/>
+    </svg>
+  )
+}

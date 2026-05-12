@@ -19,3 +19,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div style={{ paddingTop: 'var(--nav-h)' }}>
           {children}
         </div>
+        <Footer />
+      </body>
+    </html>
+  )
+}
