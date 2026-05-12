@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   title: 'CraftersUnited — Discover Handcrafted Art from Local Makers',
   description: 'Find unique handcrafted art from independent artists across India.',
   icons: {
-    icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',
   },
 }
@@ -18,4 +17,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-cream font-sans text-charcoal">
         <Navbar />
         <div style={{ paddingTop: 'var(--nav-h)' }}>
-         
+          {children}
+        </div>
