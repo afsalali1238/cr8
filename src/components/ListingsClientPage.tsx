@@ -113,7 +113,7 @@ export default function ListingsClientPage({
       <div className="flex flex-1 overflow-hidden">
         {/* Map — left side, hidden on mobile */}
         <div className="hidden lg:block w-[420px] flex-shrink-0 border-r border-sand-dark">
-          <MapWrapper artists={mapArtists} highlightId={hoveredArtistId} />
+          <MapWrapper artists={mapArtists} activeId={hoveredArtistId} />
         </div>
 
         {/* Product grid — right side */}
