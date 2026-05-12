@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import type { Artist } from '@/types'
 import SafeImage from './SafeImage'
+import ImageFallback from './ImageFallback'
 
 export default function ArtistCard({ artist }: { artist: Partial<Artist> }) {
   return (
@@ -21,7 +22,7 @@ export default function ArtistCard({ artist }: { artist: Partial<Artist> }) {
             src={artist.photo_url || ''}
             alt={artist.name || ''}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            fallback={<div className="w-full h-full flex items-center justify-center text-6xl">🎨</div>}
+            fallback={<ImageFallback className="w-full h-full" variant="artist" />}
           />
           {/* category badge */}
           <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-cream/90 backdrop-blur-sm

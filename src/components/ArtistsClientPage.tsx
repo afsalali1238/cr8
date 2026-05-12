@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import MapWrapper from './MapWrapper'
 import SafeImage from './SafeImage'
+import ImageFallback from './ImageFallback'
 import type { MapArtist } from './ArtistMapFull'
 
 interface Artist {
@@ -218,10 +219,10 @@ export default function ArtistsClientPage({ artists, categories, states }: Props
                             src={artist.photo_url}
                             alt={artist.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            fallback={<div className="w-full h-full flex items-center justify-center text-5xl">🎨</div>}
+                            fallback={<ImageFallback className="w-full h-full" variant="artist" />}
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-5xl">🎨</div>
+                          <ImageFallback className="w-full h-full" variant="artist" />
                         )}
                         {/* Category badge */}
                         {artist.category && (

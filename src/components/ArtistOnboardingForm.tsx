@@ -82,6 +82,20 @@ export default function ArtistOnboardingForm() {
       // 1. Upload photo to Supabase Storage
       let photo_url = null
       if (photoFile && photoFile.size > 0) {
+        // Server-side file validation
+        const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+        const MAX_SIZE = 5 * 1024 * 1024 // 5MB
+        if (!ALLOWED_TYPES.includes(photoFile.type)) {
+          setError('Only JPG, PNG, WebP and GIF images are allowed.')
+          setIsSubmitting(false)
+          return
+        }
+        if (photoFile.size > MAX_SIZE) {
+          setError('Photo must be under 5MB.')
+          setIsSubmitting(false)
+          return
+        }
+
         const fileExt = photoFile.name.split('.').pop()
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
         const { data: uploadData, error: uploadError } = await supabase.storage

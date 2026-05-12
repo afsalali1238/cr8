@@ -2,6 +2,7 @@ import { createServerClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import SafeImage from '@/components/SafeImage'
+import ImageFallback from '@/components/ImageFallback'
 
 export default async function ListingPage({ params }: { params: { id: string } }) {
   const supabase = createServerClient()
@@ -32,7 +33,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
             src={listing.image_url || ''} 
             alt={listing.title} 
             className="w-full h-full object-cover" 
-            fallback={<div className="w-full h-full flex items-center justify-center text-8xl">🎨</div>}
+            fallback={<ImageFallback className="w-full h-full" variant="listing" />}
           />
         </div>
 
@@ -59,7 +60,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
                 src={artist.photo_url || ''} 
                 alt={artist.name} 
                 className="w-10 h-10 rounded-full object-cover" 
-                fallback={<div className="w-10 h-10 rounded-full bg-sand-dark flex items-center justify-center">🎨</div>}
+                fallback={<ImageFallback className="w-10 h-10 rounded-full" variant="artist" />}
               />
               <div>
                 <p className="font-semibold text-ink text-sm">{artist.name}</p>

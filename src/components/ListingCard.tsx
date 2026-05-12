@@ -4,8 +4,13 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import type { Listing } from '@/types'
 import SafeImage from './SafeImage'
+import ImageFallback from './ImageFallback'
 
 export default function ListingCard({ listing }: { listing: Listing }) {
+  const isNew = listing.created_at
+    ? Date.now() - new Date(listing.created_at).getTime() < 7 * 24 * 60 * 60 * 1000
+    : false
+
   return (
     <motion.div
       whileHover={{ y: -8 }}
@@ -21,8 +26,13 @@ export default function ListingCard({ listing }: { listing: Listing }) {
             src={listing.image_url || ''}
             alt={listing.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            fallback={<div className="w-full h-full flex items-center justify-center text-5xl">🎁</div>}
+            fallback={<ImageFallback className="w-full h-full" variant="listing" />}
           />
+          {isNew && (
+            <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider shadow-sm">
+              New
+            </span>
+          )}
           {listing.price && (
             <span className="absolute bottom-3 right-3 px-3 py-1 rounded-lg bg-ink/80 backdrop-blur-md
                              text-sm font-semibold text-white">

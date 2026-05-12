@@ -3,6 +3,7 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import MapWrapper from './MapWrapper'
 import SafeImage from './SafeImage'
+import ImageFallback from './ImageFallback'
 import type { MapArtist } from './ArtistMapFull'
 
 interface Artist {
@@ -139,7 +140,7 @@ export default function ListingsClientPage({
                       src={listing.image_url || ''}
                       alt={listing.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
+                      fallback={<ImageFallback className="w-full h-full" variant="listing" />}
                     />
                     {listing.category && (
                       <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-cream/90 text-xs font-medium text-clay">

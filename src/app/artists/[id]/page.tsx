@@ -2,6 +2,8 @@ import { createServerClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import SafeImage from '@/components/SafeImage'
+import ImageFallback from '@/components/ImageFallback'
+import type { Listing } from '@/types'
 
 export default async function ArtistPage({ params }: { params: { id: string } }) {
   const supabase = createServerClient()
@@ -26,7 +28,7 @@ export default async function ArtistPage({ params }: { params: { id: string } })
             src={artist.photo_url || ''}
             alt={artist.name}
             className="w-32 h-32 rounded-full object-cover border-4 border-cream shadow-md"
-            fallback={<div className="w-32 h-32 rounded-full bg-sand-dark flex items-center justify-center text-5xl">🎨</div>}
+            fallback={<ImageFallback className="w-32 h-32 rounded-full" variant="artist" />}
           />
         </div>
         <div className="flex-1 min-w-0">
@@ -85,7 +87,7 @@ export default async function ArtistPage({ params }: { params: { id: string } })
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {(Array.isArray(artist.listings) ? artist.listings : [artist.listings]).map((listing: any) => (
+            {(Array.isArray(artist.listings) ? artist.listings : [artist.listings]).map((listing: Listing) => (
               <Link key={listing.id} href={`/listings/${listing.id}`}
                 className="group block rounded-xl overflow-hidden border border-sand-dark bg-cream hover:border-clay hover:shadow-md transition-all duration-200">
                 <div className="h-40 bg-sand overflow-hidden">
@@ -93,7 +95,7 @@ export default async function ArtistPage({ params }: { params: { id: string } })
                     src={listing.image_url || ''}
                     alt={listing.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
+                    fallback={<ImageFallback className="w-full h-full" variant="listing" />}
                   />
                 </div>
                 <div className="p-3">

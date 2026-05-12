@@ -1,7 +1,9 @@
 import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import SafeImage from '@/components/SafeImage'
+import ImageFallback from '@/components/ImageFallback'
 import CategoryIcon from '@/components/CategoryIcon'
+import type { Artist, Category } from '@/types'
 
 export const revalidate = 60
 
@@ -98,7 +100,7 @@ export default async function HomePage() {
           <Link href="/listings" className="text-sm text-clay font-medium hover:underline">All listings →</Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {(categories || []).map((cat: any) => (
+          {(categories || []).map((cat: Category) => (
             <Link key={cat.slug} href={`/listings?category=${cat.slug}`}
               className="group flex flex-col items-center gap-3 p-5 rounded-2xl bg-sand border border-sand-dark hover:border-clay hover:bg-clay-pale transition-all duration-200">
               <span className="group-hover:scale-110 transition-transform duration-200">
@@ -124,7 +126,7 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {(artists || []).map((artist: any) => (
+              {(artists || []).map((artist: Partial<Artist>) => (
                 <Link key={artist.id} href={`/artists/${artist.id}`}
                   className="group bg-cream rounded-2xl overflow-hidden border border-sand-dark hover:border-clay hover:shadow-lg hover:shadow-clay/10 transition-all duration-300">
                   <div className="relative h-52 bg-sand overflow-hidden">
@@ -132,7 +134,7 @@ export default async function HomePage() {
                       src={artist.photo_url || ''}
                       alt={artist.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      fallback={<div className="w-full h-full flex items-center justify-center text-6xl">🎨</div>}
+                      fallback={<ImageFallback className="w-full h-full" variant="artist" />}
                     />
                     {artist.category && (
                       <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-cream/90 text-xs font-medium text-clay">
