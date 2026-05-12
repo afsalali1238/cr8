@@ -54,7 +54,7 @@ export async function middleware(request: NextRequest) {
   const { data: { session } } = await supabase.auth.getSession()
 
   // Protect /admin — only the site owner is allowed in
-  const ADMIN_EMAIL = 'afsalali8321@gmail.com'
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'afsalali8321@gmail.com'
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!session || session.user.email !== ADMIN_EMAIL) {
       const loginUrl = new URL('/login', request.url)

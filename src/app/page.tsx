@@ -62,6 +62,13 @@ export default async function HomePage() {
                 <p className="text-xs text-muted uppercase tracking-wide">Based In</p>
               </div>
             </div>
+
+            {/* Mobile hero image strip — visible only on small screens */}
+            <div className="flex gap-3 overflow-x-auto mt-8 md:hidden pb-2 -mx-4 px-4 scrollbar-hide">
+              <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400" alt="Painting" className="h-36 w-44 flex-shrink-0 rounded-2xl object-cover" />
+              <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400" alt="Pottery" className="h-36 w-44 flex-shrink-0 rounded-2xl object-cover" />
+              <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400" alt="Jewelry" className="h-36 w-44 flex-shrink-0 rounded-2xl object-cover" />
+            </div>
           </div>
           <div className="hidden md:grid grid-cols-2 gap-3 h-[480px]">
             <div className="flex flex-col gap-3">
@@ -160,6 +167,26 @@ export default async function HomePage() {
               <p className="text-muted leading-relaxed">{s.body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* WHY CRAFTERSUNITED */}
+      <section className="py-20 px-4 bg-sand">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="font-display text-3xl text-ink text-center mb-12">Why CraftersUnited?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: '🏺', title: 'Built for makers without a following', body: 'Most artisans in India sell at local markets with no way to reach buyers beyond their city.' },
+              { icon: '📱', title: 'WhatsApp-first, no middlemen', body: 'Buyers contact artists directly. No platform fees, no commission, no algorithm deciding who gets seen.' },
+              { icon: '📍', title: 'Local discovery, human connection', body: 'Find artists near you on a map. Every piece has a name and a face behind it.' },
+            ].map(item => (
+              <div key={item.title} className="text-center p-6 rounded-2xl bg-cream border border-sand-dark">
+                <div className="text-5xl mb-4">{item.icon}</div>
+                <h3 className="text-lg font-semibold text-ink mb-2">{item.title}</h3>
+                <p className="text-muted leading-relaxed text-sm">{item.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

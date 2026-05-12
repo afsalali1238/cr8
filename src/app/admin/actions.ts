@@ -2,7 +2,7 @@
 'use server'
 import { createServerClient } from '@/lib/supabase/server'
 
-const ADMIN_EMAIL = 'afsalali8321@gmail.com'
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'afsalali8321@gmail.com'
 
 export async function approveArtist(id: string) {
   const supabase = createServerClient()

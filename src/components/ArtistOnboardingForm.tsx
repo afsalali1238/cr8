@@ -106,7 +106,7 @@ export default function ArtistOnboardingForm() {
         location_name: `${city}, ${state}`,
         whatsapp,
         instagram,
-        email: data.get('email') as string || null,
+        email: ((data.get('email') as string) || '').toLowerCase().trim() || null,
         category,
         photo_url,
         is_approved: false,
@@ -208,8 +208,8 @@ export default function ArtistOnboardingForm() {
         </div>
 
         <div>
-          <label htmlFor="email" className={labelClasses}>Email Address</label>
-          <input id="email" name="email" type="email" placeholder="your@email.com" className={inputClasses} />
+          <label htmlFor="email" className={labelClasses}>Email Address *</label>
+          <input id="email" name="email" type="email" required placeholder="your@email.com" className={inputClasses} />
         </div>
 
         <div>
