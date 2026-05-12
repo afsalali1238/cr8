@@ -18,16 +18,14 @@ export default async function ArtistPage({ params }: { params: { id: string } })
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-10">
-      {/* Back */}
       <Link href="/artists" className="text-sm text-clay hover:underline mb-6 inline-block">← Back to Artists</Link>
 
-      {/* Profile header */}
       <div className="flex flex-col sm:flex-row gap-6 mb-8 p-6 bg-sand rounded-2xl border border-sand-dark">
         <div className="flex-shrink-0">
-          <SafeImage 
-            src={artist.photo_url || ''} 
+          <SafeImage
+            src={artist.photo_url || ''}
             alt={artist.name}
-            className="w-32 h-32 rounded-full object-cover border-4 border-cream shadow-md" 
+            className="w-32 h-32 rounded-full object-cover border-4 border-cream shadow-md"
             fallback={<div className="w-32 h-32 rounded-full bg-sand-dark flex items-center justify-center text-5xl">🎨</div>}
           />
         </div>
@@ -43,7 +41,6 @@ export default async function ArtistPage({ params }: { params: { id: string } })
           <p className="text-muted text-sm mb-3">📍 {artist.city}, {artist.state}</p>
           {artist.bio && <p className="text-charcoal text-sm leading-relaxed">{artist.bio}</p>}
 
-          {/* Contact buttons */}
           <div className="flex flex-wrap gap-3 mt-4">
             {artist.whatsapp && (
               <a href={`https://wa.me/${artist.whatsapp}?text=${whatsappMsg}`}
@@ -69,7 +66,6 @@ export default async function ArtistPage({ params }: { params: { id: string } })
         </div>
       </div>
 
-      {/* Listings */}
       <div>
         <h2 className="font-display text-3xl text-ink mb-4">
           Listings ({artist.listings?.length || 0})
@@ -93,11 +89,24 @@ export default async function ArtistPage({ params }: { params: { id: string } })
               <Link key={listing.id} href={`/listings/${listing.id}`}
                 className="group block rounded-xl overflow-hidden border border-sand-dark bg-cream hover:border-clay hover:shadow-md transition-all duration-200">
                 <div className="h-40 bg-sand overflow-hidden">
-                  <SafeImage 
-                    src={listing.image_url || ''} 
+                  <SafeImage
+                    src={listing.image_url || ''}
                     alt={listing.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
                   />
                 </div>
-   
+                <div className="p-3">
+                  <p className="font-semibold text-ink text-sm line-clamp-1">{listing.title}</p>
+                  {listing.price && (
+                    <p className="text-clay font-bold text-sm mt-0.5">₹{listing.price.toLocaleString('en-IN')}</p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
+  )
+}

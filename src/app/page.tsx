@@ -59,7 +59,7 @@ export default async function HomePage() {
               </div>
               <div>
                 <p className="font-display text-3xl text-clay">Kerala</p>
-                <p className="text-xs text-muted uppercase tracking-wide">Starting From</p>
+                <p className="text-xs text-muted uppercase tracking-wide">Based In</p>
               </div>
             </div>
           </div>
@@ -174,4 +174,11 @@ export default async function HomePage() {
             List your work for free. Connect directly with buyers. No commission. No algorithms working against you.
           </p>
           <Link href="/join"
-            className="inline-block px-8 py-4 rounded-full bg-clay text-white font-me
+            className="inline-block px-8 py-4 rounded-full bg-clay text-white font-medium text-lg hover:bg-clay-light transition-colors">
+            Join CraftersUnited — Free
+          </Link>
+        </div>
+      </section>
+    </main>
+  )
+}
