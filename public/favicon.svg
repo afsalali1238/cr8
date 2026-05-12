@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Pottery vase — minimal line art, terracotta -->
+  <path d="M12 6h8l1.5 3H10.5L12 6z" stroke="#c2440f" stroke-width="1.5" stroke-linejoin="round" fill="#fdf0e8"/>
+  <path d="M10.5 9c-1.5 3-2.5 5-2.5 8 0 5 3.5 9 8 9s8-4 8-9c0-3-1-5-2.5-8H10.5z" stroke="#c2440f" stroke-width="1.5" stroke-linejoin="round" fill="#fdf0e8"/>
+  <path d="M10 14c1.5-.5 3-1 6-1s4.5.5 6 1" stroke="#c2440f" stroke-width="1" stroke-linecap="round"/>
+  <path d="M8.5 17h15" stroke="#c2440f" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+</svg>
