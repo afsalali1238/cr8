@@ -23,6 +23,7 @@ interface Listing {
   price: number | null
   image_url: string | null
   category: string | null
+  is_available: boolean
   artist: Artist
 }
 
@@ -30,31 +31,31 @@ interface Category {
   id: number
   name: string
   slug: string
-  icon: string | null
 }
 
-interface Props {
+export default function ListingsClientPage({
+  listings,
+  categories,
+}: {
   listings: Listing[]
   categories: Category[]
-}
-
-export default function ListingsClientPage({ listings, categories }: Props) {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null)
+}) {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [hoveredArtistId, setHoveredArtistId] = useState<string | null>(null)
 
-  const filtered = useMemo(() =>
-    listings.filter(l => !activeCategory || l.category === activeCategory),
-    [listings, activeCategory]
-  )
+  const filtered = useMemo(() => {
+    if (!selectedCategory) return listings
+    return listings.filter(l => {
+      const cat = categories.find(c => c.slug === selectedCategory)
+      return cat && (l.category === cat.name || l.artist?.category === cat.name)
+    })
+  }, [listings, categories, selectedCategory])
 
   const mapArtists: MapArtist[] = useMemo(() => {
     const artistMap = new Map<string, MapArtist>()
-    filtered.forEach(listing => {
-      const a = listing.artist
-      if (!a.lat || !a.lng) return
-      if (artistMap.has(a.id)) {
-        artistMap.get(a.id)!.listing_count! += 1
-      } else {
+    filtered.forEach(l => {
+      const a = l.artist
+      if (a && a.lat && a.lng && !artistMap.has(a.id)) {
         artistMap.set(a.id, {
           id: a.id,
           name: a.name,
@@ -64,7 +65,6 @@ export default function ListingsClientPage({ listings, categories }: Props) {
           lng: a.lng,
           photo_url: a.photo_url,
           category: a.category,
-          listing_count: 1,
         })
       }
     })
@@ -72,27 +72,25 @@ export default function ListingsClientPage({ listings, categories }: Props) {
   }, [filtered])
 
   return (
-    <main className="min-h-screen">
-      {/* Page header */}
-      <div className="bg-clay-pale border-b border-sand-dark px-4 py-8">
+    <main className="flex flex-col h-[calc(100vh-64px)]">
+      {/* Header */}
+      <div className="bg-clay-pale border-b border-sand-dark px-4 py-5 flex-shrink-0">
         <div className="max-w-7xl mx-auto">
-          <h1 className="font-display text-5xl text-ink mb-1">Shop</h1>
-          <p className="text-muted">
-            {filtered.length} item{filtered.length !== 1 ? 's' : ''} from independent makers across India
+          <h1 className="font-display text-4xl text-ink">Shop</h1>
+          <p className="text-muted text-sm mt-0.5">
+            {filtered.length} item{filtered.length !== 1 ? 's' : ''} from {mapArtists.length} maker{mapArtists.length !== 1 ? 's' : ''}
           </p>
         </div>
       </div>
 
-      {/* Filter bar */}
-      <div className="sticky top-16 z-30 bg-cream/95 backdrop-blur-sm border-b border-sand-dark px-4 py-3">
-        <div className="max-w-7xl mx-auto flex flex-wrap gap-2 items-center">
-          <span className="text-xs text-muted font-medium uppercase tracking-wider mr-1">Category:</span>
+      {/* Category filter */}
+      <div className="bg-cream border-b border-sand-dark px-4 py-3 flex-shrink-0 overflow-x-auto">
+        <div className="max-w-7xl mx-auto flex items-center gap-2 min-w-max">
+          <span className="text-xs font-semibold text-muted uppercase tracking-widest mr-1">CATEGORY:</span>
           <button
-            onClick={() => setActiveCategory(null)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              !activeCategory
-                ? 'bg-clay text-white'
-                : 'bg-sand border border-sand-dark text-charcoal hover:border-clay'
+            onClick={() => setSelectedCategory(null)}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              !selectedCategory ? 'bg-clay text-white' : 'bg-sand text-charcoal hover:bg-sand-dark'
             }`}
           >
             All
@@ -100,116 +98,72 @@ export default function ListingsClientPage({ listings, categories }: Props) {
           {categories.map(cat => (
             <button
               key={cat.slug}
-              onClick={() => setActiveCategory(activeCategory === cat.name ? null : cat.name)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                activeCategory === cat.name
-                  ? 'bg-clay text-white'
-                  : 'bg-sand border border-sand-dark text-charcoal hover:border-clay'
+              onClick={() => setSelectedCategory(cat.slug === selectedCategory ? null : cat.slug)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                selectedCategory === cat.slug ? 'bg-clay text-white' : 'bg-sand text-charcoal hover:bg-sand-dark'
               }`}
             >
-              {cat.icon} {cat.name}
+              {cat.name}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Split layout: map left, products right */}
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row">
+      {/* Main content: map + grid */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Map — left side, hidden on mobile */}
+        <div className="hidden lg:block w-[420px] flex-shrink-0 border-r border-sand-dark">
+          <MapWrapper artists={mapArtists} highlightId={hoveredArtistId} />
+        </div>
 
-          {/* MAP */}
-          <div className="lg:sticky lg:top-[108px] lg:self-start w-full lg:w-[380px] flex-shrink-0">
-            <div className="h-[260px] lg:h-[calc(100vh-108px)] relative">
-              {mapArtists.length > 0 ? (
-                <MapWrapper
-                  artists={mapArtists}
-                  activeId={hoveredArtistId}
-                  onPinClick={() => {}}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-sand">
-                  <p className="text-muted text-sm">No mapped artists yet</p>
-                </div>
-              )}
-              <div className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-sm border border-sand-dark">
-                <p className="text-xs text-charcoal text-center">
-                  📍 Hover a product to highlight its maker on the map
-                </p>
-              </div>
+        {/* Product grid — right side */}
+        <div className="flex-1 overflow-y-auto p-4">
+          {filtered.length === 0 ? (
+            <div className="text-center py-20">
+              <div className="text-5xl mb-4">🎨</div>
+              <p className="text-charcoal font-medium">No listings in this category yet</p>
+              <p className="text-muted text-sm mt-1">Check back soon — new makers join every week</p>
             </div>
-          </div>
-
-          {/* PRODUCT GRID — flat, product-first */}
-          <div className="flex-1 p-4 lg:p-6">
-            {filtered.length === 0 ? (
-              <div className="text-center py-20">
-                <div className="text-4xl mb-3">🛍</div>
-                <p className="text-charcoal font-medium">No items in this category yet</p>
-                <button
-                  onClick={() => setActiveCategory(null)}
-                  className="mt-4 text-clay text-sm underline"
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 max-w-5xl">
+              {filtered.map(listing => (
+                <Link
+                  key={listing.id}
+                  href={`/listings/${listing.id}`}
+                  className="group block rounded-xl overflow-hidden border border-sand-dark bg-cream hover:border-clay hover:shadow-md transition-all duration-200"
+                  onMouseEnter={() => setHoveredArtistId(listing.artist?.id ?? null)}
+                  onMouseLeave={() => setHoveredArtistId(null)}
                 >
-                  Show everything
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
-                {filtered.map(listing => (
-                  <Link
-                    key={listing.id}
-                    href={`/listings/${listing.id}`}
-                    onMouseEnter={() => setHoveredArtistId(listing.artist.id)}
-                    onMouseLeave={() => setHoveredArtistId(null)}
-                    className="group block rounded-2xl overflow-hidden border border-sand-dark bg-cream
-                               hover:border-clay hover:shadow-lg hover:shadow-clay/10 transition-all duration-200"
-                  >
-                    {/* Product image */}
-                    <div className="relative h-44 bg-sand overflow-hidden">
-                      {listing.image_url ? (
-                        <SafeImage
-                          src={listing.image_url}
-                          alt={listing.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          fallback={
-                            <div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>
-                          }
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>
-                      )}
-                      {listing.category && (
-                        <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-cream/90 text-[10px] font-medium text-clay">
-                          {listing.category}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Product info — title + price prominent, artist as subtle byline */}
-                    <div className="p-3">
-                      <p className="font-semibold text-ink text-sm line-clamp-2 leading-snug">
-                        {listing.title}
-                      </p>
-                      <div className="flex items-center justify-between mt-2">
-                        {listing.price ? (
-                          <p className="text-clay font-bold text-sm">
-                            ₹{listing.price.toLocaleString('en-IN')}
-                          </p>
-                        ) : (
-                          <p className="text-muted text-xs italic">Price on request</p>
-                        )}
-                      </div>
-                      <p className="text-[11px] text-muted mt-1.5 truncate">
+                  <div className="h-44 bg-sand overflow-hidden relative">
+                    <SafeImage
+                      src={listing.image_url || ''}
+                      alt={listing.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fallback={<div className="w-full h-full flex items-center justify-center text-4xl">🎨</div>}
+                    />
+                    {listing.category && (
+                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-cream/90 text-xs font-medium text-clay">
+                        {listing.category}
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <p className="font-semibold text-ink text-sm line-clamp-2 leading-snug">{listing.title}</p>
+                    {listing.price && (
+                      <p className="text-clay font-bold text-sm mt-1">₹{listing.price.toLocaleString('en-IN')}</p>
+                    )}
+                    {listing.artist && (
+                      <p className="text-xs text-muted mt-1.5 truncate">
                         by {listing.artist.name} · {listing.artist.city}
                       </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </main>
   )
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

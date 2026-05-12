@@ -11,4 +11,14 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    retur
+    return [
+      {
+        source: '/community/:path*',
+        destination: '/',
+        permanent: false,
+      },
+    ]
+  },
+}
+
+module.exports = nextConfig
