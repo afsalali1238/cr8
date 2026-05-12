@@ -152,7 +152,7 @@ export default function ArtistOnboardingForm() {
       <div className="space-y-6">
         <div>
           <label htmlFor="name" className={labelClasses}>Full Name *</label>
-          <input id="name" name="name" required placeholder="Afsal Ali" className={inputClasses} />
+          <input id="name" name="name" required placeholder="John Doe" className={inputClasses} />
         </div>
 
         <div>
