@@ -1,5 +1,6 @@
 // CategoryIcon.tsx — minimal line-art SVG for each craft category
 // Stroke: terracotta (#c2440f), fill: warm cream (#fdf0e8)
+import type { ReactElement } from 'react'
 
 interface Props {
   slug: string
@@ -12,7 +13,7 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
   const fill = '#fdf0e8'
   const sw = '1.5'
 
-  const icons: Record<string, JSX.Element> = {
+  const icons: Record<string, ReactElement> = {
     'art-crafts': (
       // Paintbrush crossing a palette
       <svg width={s} height={s} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -78,7 +79,4 @@ export default function CategoryIcon({ slug, size = 48 }: Props) {
   return icons[slug] ?? (
     <svg width={s} height={s} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <circle cx="24" cy="24" r="14" stroke={stroke} strokeWidth={sw} fill={fill}/>
-      <path d="M20 20 q4-6 8 0 q-4 6-8 0" stroke={stroke} strokeWidth="1" strokeLinecap="round"/>
-    </svg>
-  )
-}
+      <path d="M20 20 q4-6 8 0 q-4 6-8 0" stroke={stroke} strokeWidth="1
